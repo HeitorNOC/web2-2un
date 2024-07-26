@@ -1,0 +1,129 @@
+.sidebar {
+    /* width: 80px; */ /* Reduced width */
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: #333;
+    color: white;
+    overflow-y: auto;
+    /* z-index: 1000; */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align items */
+  }
+  
+  .sidebar a {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align items */
+    padding: 10px 20px; /* Vertical padding for more compact links */
+    text-decoration: none;
+    color: white;
+    width: 100%; /* Make the link occupy full width */
+    border-bottom: 1px solid #444; /* Separator line */
+    transition: background-color 0.3s;
+  }
+  
+  .sidebar a:hover {
+    background-color: #555;
+  }
+  
+  .link-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align items */
+    margin: 10px 0; /* Space between items */
+  }
+  
+  .icon {
+    font-size: 20px; /* Adjust icon size */
+  }
+  
+  .link-title {
+    font-size: 12px; /* Smaller font size for titles */
+    margin-top: 5px; /* Space between icon and text */
+  }
+  
+  /* Responsiveness: Hide the sidebar on smaller screens */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 0;
+      overflow: hidden;
+    }
+  }
+
+  .button-user {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    z-index: 1001;
+  }
+  
+  .link-container {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+  }
+  
+  .icon {
+    margin-right: 8px;
+  }
+  
+  .link-title {
+    font-size: 16px;
+  }
+  
+  .relative {
+    position: relative;
+  }
+  
+  .absolute {
+    position: absolute;
+  }
+  
+  .bg-red-500 {
+    background-color: #f56565;
+  }
+  
+  .text-white {
+    color: #fff;
+  }
+  
+  .rounded-full {
+    border-radius: 9999px;
+  }
+  
+  .w-4 {
+    width: 1rem;
+  }
+  
+  .h-4 {
+    height: 1rem;
+  }
+  
+  .flex {
+    display: flex;
+  }
+  
+  .items-center {
+    align-items: center;
+  }
+  
+  .justify-center {
+    justify-content: center;
+  }
+  
+  .text-xs {
+    font-size: 0.75rem;
+  }
+  
+  .mt-4 {
+    margin-top: 1rem;
+  }
+  
+  .transform {
+    transform: translate(50%, -50%);
+  }
