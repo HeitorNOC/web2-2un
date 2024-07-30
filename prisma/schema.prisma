@@ -11,6 +11,7 @@ model User {
   id                    String                 @id @default(cuid())
   name                  String?
   email                 String?                @unique
+  cpf                   String?                @unique
   emailVerified         DateTime?
   image                 String?
   password              String?
@@ -75,4 +76,66 @@ model TwoFactorConfirmation {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+model AdministratorAdditionalData {
+  id        String    @id @default(uuid())
+  name      String?  
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([id])
+}
+
+model StudentAdditionalData {
+  id                    String    @id @default(uuid())
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id])
+  name                  String?
+  gender                String?
+  phone                 String?
+  birthDate             DateTime?
+  height                Float?
+  weight                Float?
+  bf                    Float?
+  comorbidity           String?
+  assignedInstructorId  String?
+  assignedInstructor    InstructorAdditionalData? @relation(fields: [assignedInstructorId], references: [id])
+  status                String?
+  paymentDate           DateTime? @default(now())
+  photo                 Bytes?
+  evolution             Json?
+  evolutionDate         DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([id])
+}
+
+model InstructorAdditionalData {
+  id         String    @id @default(uuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  name       String?
+  phone      String?
+  cref       String?   @unique
+  photo      Bytes?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([id])
+}
+
+model Machine {
+  id               String    @id @default(uuid())
+  name             String
+  serialNumber     String    @unique
+  acquisitionDate  DateTime
+  status           String
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([id])
 }
