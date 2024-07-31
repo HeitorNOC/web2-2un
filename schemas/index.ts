@@ -36,57 +36,54 @@ export const SettingsSchema = z
     password: z.optional(z.string().min(1)),
     newPassword: z.optional(
       z.string().min(6, {
-        message:
-          "Please enter a new password with at least 6 characters, required",
+        message: "Por favor, insira uma nova senha com pelo menos 6 caracteres, obrigatório",
       })
     ),
     newPasswordConfirmation: z.optional(
       z.string().min(6, {
-        message:
-          "Please confirm your password with at least 6 characters, required",
+        message: "Por favor, confirme sua nova senha com pelo menos 6 caracteres, obrigatório",
       })
     ),
   })
   .refine((data) => passwordRequired(data, "password", "newPassword"), {
-    message:
-      "Please enter a new password with at least 6 characters, required!",
+    message: "Por favor, insira uma nova senha com pelo menos 6 caracteres, obrigatório!",
     path: ["newPassword"],
   })
   .refine((data) => passwordRequired(data, "newPassword", "password"), {
-    message: "Please enter your valid password, required!",
+    message: "Por favor, insira sua senha válida, obrigatório!",
     path: ["password"],
   })
   .refine((data) => data.newPassword === data.newPasswordConfirmation, {
-    message: "Passwords do not match.",
+    message: "As senhas não coincidem.",
     path: ["newPasswordConfirmation"],
   });
 
 export const NewPasswordSchema = z
   .object({
     password: z.string().min(6, {
-      message: "Please enter your password, required",
+      message: "Por favor, insira sua senha, obrigatório",
     }),
     passwordConfirmation: z.string().min(6, {
-      message: "Please confirm your password, required.",
+      message: "Por favor, confirme sua senha, obrigatório.",
     }),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
-    message: "Passwords do not match.",
+    message: "As senhas não coincidem.",
     path: ["passwordConfirmation"],
   });
 
 export const ResetSchema = z.object({
   email: z.string().email({
-    message: "Please enter a valid email address, required.",
+    message: "Por favor, insira um endereço de e-mail válido, obrigatório.",
   }),
 });
 
 export const LoginSchema = z.object({
   email: z.string().email({
-    message: "Please enter a valid email address. Email is required.",
+    message: "Por favor, insira um endereço de e-mail válido. E-mail é obrigatório.",
   }),
   password: z.string().min(1, {
-    message: "Please enter your password. Password is required.",
+    message: "Por favor, insira sua senha. Senha é obrigatória.",
   }),
   code: z.optional(z.string()),
 });
@@ -94,19 +91,19 @@ export const LoginSchema = z.object({
 export const RegisterSchema = z
   .object({
     name: z.string().min(1, {
-      message: "Please enter your name, required.",
+      message: "Por favor, insira seu nome, obrigatório.",
     }),
     email: z.string().email({
-      message: "Please enter a valid email address, required.",
+      message: "Por favor, insira um endereço de e-mail válido, obrigatório.",
     }),
     password: z.string().min(6, {
-      message: "Please enter a password with at least 6 characters, required",
+      message: "Por favor, insira uma senha com pelo menos 6 caracteres, obrigatório",
     }),
     passwordConfirmation: z.string().min(6, {
-      message: "Please confirm your password, required.",
+      message: "Por favor, confirme sua senha, obrigatório.",
     }),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
-    message: "Passwords do not match.",
+    message: "As senhas não coincidem.",
     path: ["passwordConfirmation"],
   });

@@ -48,8 +48,8 @@ const ResetPasswordForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Forgot your password?"
-      backButtonLabel="Back to login"
+      headerLabel="Esqueceu a Senha?"
+      backButtonLabel="Voltar ao Login"
       backButtonHref="/auth/login"
     >
       <Form {...form}>
@@ -84,7 +84,7 @@ const ResetPasswordForm = () => {
             type="submit"
             className="w-full hover:bg-sky-400"
           >
-            Send reset password email
+            Enviar Email de recuperação
           </Button>
         </form>
       </Form>

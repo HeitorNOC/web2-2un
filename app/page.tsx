@@ -1,21 +1,18 @@
-import { MdOutlineSecurity } from "react-icons/md";
-
+import Logo from '@/public/Logo.png'
 import { Button } from "@/components/ui/button";
 import LoginButton from "@/components/auth/login-button";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <main className="flex h-full flex-col items-center justify-center">
       <div className="space-y-6 text-center">
         <div className="flex items-center justify-center">
-          <MdOutlineSecurity className="text-sky-400 text-8xl" />
-          <h1 className="text-6xl font-semibold text-primary drop-shadow-md">
-            Auth
-          </h1>
+          <Image src={Logo} alt="Logo" width={500} height={500}/>
         </div>
 
         <p className="text-primary text-lg">
-          Welcome the gym system.
+          Bem vindo ao Flex GYM.
         </p>
 
         <div>
@@ -28,9 +25,8 @@ export default function Home() {
           <LoginButton>
             <Button
               className="bg-gradient-to-r from-sky-400 to-sky-500 text-primary hover:bg-gradient-to-l hover:from-sky-400 hover:to-sky-500"
-              size="lg"
-            >
-              Sign in
+              size="lg">
+              Entrar
             </Button>
           </LoginButton>
         </div>

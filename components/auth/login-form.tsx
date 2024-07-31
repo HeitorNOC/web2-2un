@@ -84,8 +84,8 @@ const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Welcome back!"
-      backButtonLabel="Don't have an account?"
+      headerLabel="Bem vindo de Volta!"
+      backButtonLabel="Ainda não tem conta?"
       backButtonHref="/auth/register"
       showSocial
     >
@@ -101,7 +101,7 @@ const LoginForm = () => {
                 name="code"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Two Factor Authentication Code</FormLabel>
+                    <FormLabel>Autenticação por dois fatores</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -141,7 +141,7 @@ const LoginForm = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>Senha</FormLabel>
                       <FormControl>
                         <PasswordInput
                           {...field}
@@ -157,7 +157,7 @@ const LoginForm = () => {
                         asChild
                         className="px-0 text-muted-foreground"
                       >
-                        <Link href="/auth/reset">Forgot your password?</Link>
+                        <Link href="/auth/reset">Esqueceu sua Senha?</Link>
                       </Button>
                     </FormItem>
                   )}

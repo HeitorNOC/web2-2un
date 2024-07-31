@@ -53,8 +53,8 @@ const NewPasswordForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Enter a new password"
-      backButtonLabel="Back to login"
+      headerLabel="Entre com a nova Senha"
+      backButtonLabel="De volta ao Login"
       backButtonHref="/auth/login"
     >
       <Form {...form}>
@@ -68,7 +68,7 @@ const NewPasswordForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Senha</FormLabel>
                   <FormControl>
                     <PasswordInput
                       {...field}
@@ -86,7 +86,7 @@ const NewPasswordForm = () => {
               name="passwordConfirmation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm your password</FormLabel>
+                  <FormLabel>Confirme sua Senha</FormLabel>
                   <FormControl>
                     <PasswordInput
                       {...field}

@@ -35,7 +35,7 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     const existingUser = await getUserByEmail(values.email);
 
     if (existingUser && existingUser.id !== user.id) {
-      return { error: "Email already in use!" };
+      return { error: "Email já está em uso!" };
     }
 
     const verificationToken = await generateVerificationToken(values.email);
@@ -44,7 +44,7 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
       verificationToken.token
     );
 
-    return { success: "Verification email sent!" };
+    return { success: "Email de verificação enviado!" };
   }
 
   if (values.password && values.newPassword && dbUser.password) {
@@ -54,7 +54,7 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     );
 
     if (!passwordsMatch) {
-      return { error: "Incorrect password!" };
+      return { error: "Senha incorreta!" };
     }
 
     const hashedPassword = await bcrypt.hash(values.newPassword, 10);
@@ -78,5 +78,5 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     },
   });
 
-  return { success: "Settings Updated!" };
+  return { success: "Configurações atualizadas!" };
 };

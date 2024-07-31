@@ -24,7 +24,7 @@ export const login = async (
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields" };
+    return { error: "Campos Incorretos" };
   }
 
   const { email, password, code } = validatedFields.data;
@@ -32,7 +32,7 @@ export const login = async (
   const existingUser = await getUserByEmail(email);
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
-    return { error: "User not registered!" };
+    return { error: "Usuário não registrado!" };
   }
 
   if (!existingUser.emailVerified) {
@@ -45,7 +45,7 @@ export const login = async (
       verificationToken.token
     );
 
-    return { success: "Verification email sent!" };
+    return { success: "Email de verificação enviado!" };
   }
 
   if (existingUser.isTwoFactorEnabled && existingUser.email) {
