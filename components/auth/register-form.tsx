@@ -60,8 +60,8 @@ const RegisterForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Register an account to get started!"
-      backButtonLabel="Have an account already?"
+      headerLabel="Crie sua conta para começar!"
+      backButtonLabel="Ja possui uma conta?"
       backButtonHref="/auth/login"
       showSocial
     >
@@ -76,13 +76,13 @@ const RegisterForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Nome</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       disabled={isPending}
                       type="text"
-                      placeholder="Your Name"
+                      placeholder="Seu Nome"
                     />
                   </FormControl>
                   <FormMessage />
@@ -114,7 +114,7 @@ const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Senha</FormLabel>
                   <FormControl>
                     <PasswordInput
                       {...field}
@@ -133,7 +133,7 @@ const RegisterForm = () => {
               name="passwordConfirmation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm your password</FormLabel>
+                  <FormLabel>Confirme sua senha</FormLabel>
                   <FormControl>
                     <PasswordInput
                       {...field}
@@ -149,7 +149,7 @@ const RegisterForm = () => {
                     asChild
                     className="px-0 text-muted-foreground"
                   >
-                    <Link href="/auth/reset">Forgot your password?</Link>
+                    <Link href="/auth/reset">Esqueceu sua Senha?</Link>
                   </Button>
                 </FormItem>
               )}

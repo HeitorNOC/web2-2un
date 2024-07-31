@@ -1,4 +1,5 @@
-import { MdOutlineSecurity } from "react-icons/md";
+import Image from "next/image";
+import Logo from '@/public/Logo.png'
 
 type HeaderProps = {
   label: string;
@@ -8,9 +9,8 @@ const Header = ({ label }: HeaderProps) => {
   return (
     <div className="w-full flex flex-col gap-y-4 items-center justify-center">
       <div className="flex items-center justify-center">
-        <MdOutlineSecurity className="text-sky-400 text-3xl" />
+        <Image src={Logo} alt="Logo" width={250} height={250}/>
         <h1 className="text-3xl font-semibold text-primary drop-shadow-md">
-          Auth
         </h1>
       </div>
 

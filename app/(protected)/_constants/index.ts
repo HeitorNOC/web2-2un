@@ -1,7 +1,7 @@
 export const USER_LINKS = [
   {
-    title: "Client",
-    path: "/client",
+    title: "Perfil",
+    path: "/profile",
   },
   {
     title: "Settings",

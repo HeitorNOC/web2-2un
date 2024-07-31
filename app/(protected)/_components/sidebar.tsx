@@ -15,7 +15,7 @@ const Sidebar = () => {
   const roleLinks: LinkType[] = links[userRole as keyof RoleLinks] || [];
 
   const icons: { [key: string]: any } = {
-    "Client": <FaUser />,
+    "Perfil": <FaUser />,
     "Prof": <FaUser />,
     "Settings": <FaCog />,
     "Admin": <FaUser />,

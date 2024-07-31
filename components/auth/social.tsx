@@ -26,14 +26,6 @@ const Social = () => {
       >
         <GrGoogle />
       </Button>
-      <Button
-        size="lg"
-        className="w-full text-2xl hover:bg-sky-400 hover:text-background"
-        variant="outline"
-        onClick={() => onClick("github")}
-      >
-        <FaGithub />
-      </Button>
     </div>
   );
 };
