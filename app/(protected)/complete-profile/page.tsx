@@ -15,9 +15,9 @@ type StudentProfileFormData = {
   gender: string;
   phone: string;
   birthDate: string;
-  height: string;  // Alterado para string
-  weight: string;  // Alterado para string
-  bodyFat: string; // Alterado para string
+  height: string;  
+  weight: string;  
+  bodyFat: string; 
   comorbidity?: string;
 };
 
@@ -147,7 +147,6 @@ const CompleteProfile = () => {
     };
   }
 
-  // Mantendo a lógica assíncrona fora do startTransition
   const submitData = async () => {
     try {
       const res = await completeProfileAction({
@@ -163,7 +162,7 @@ const CompleteProfile = () => {
 
       if (res.success) {
         setSuccess(res.success);
-      //router.push('/');
+      router.push('/');
       }
     } catch (e) {
       console.log(e);

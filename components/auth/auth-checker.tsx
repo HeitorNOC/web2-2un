@@ -11,7 +11,7 @@ const AuthChecker = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (status === "loading") return; // Espera a sessão ser carregada
+    if (status === "loading") return; 
 
     const checkAccess = async () => {
       if (session) {
@@ -31,10 +31,10 @@ const AuthChecker = ({ children }: { children: React.ReactNode }) => {
           }
         } catch (error: any) {
           console.error('Error fetching user verification:', error.response?.data || error.message);
-          router.push("/error"); // Redireciona para uma página de erro se necessário
+          router.push("/error"); 
         }
       } else {
-        router.push("/auth/login"); // Redireciona para a página de login se não houver sessão
+        router.push("/auth/login"); 
       }
     };
 
