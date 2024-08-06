@@ -107,3 +107,20 @@ export const RegisterSchema = z
     message: "As senhas não coincidem.",
     path: ["passwordConfirmation"],
   });
+
+export const studentProfileSchema = z.object({
+  cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
+  height: z.number().refine(val => val > 0, { message: "Altura deve ser um valor positivo" }),
+  weight: z.number().refine(val => val > 0, { message: "Peso deve ser um valor positivo" }),
+  bodyFat: z.number().refine(val => val >= 0 && val <= 100, { message: "Percentual de gordura deve estar entre 0 e 100" }),
+  comorbidity: z.string().optional(),
+});
+
+export const instructorProfileSchema = z.object({
+  cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
+  cref: z.string().min(5, "CREF deve ter no mínimo 5 caracteres"),
+});
+
+export const adminProfileSchema = z.object({
+  cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
+});
