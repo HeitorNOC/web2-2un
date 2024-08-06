@@ -219,8 +219,8 @@ export default function SettingsPage() {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value={"ADMIN"}>Admin</SelectItem>
-                        <SelectItem value={"USER"}>User</SelectItem>
-                        <SelectItem value={"BARBER"}>Barber</SelectItem>
+                        <SelectItem value={"STUDENT"}>STUDENT</SelectItem>
+                        <SelectItem value={"INSTRUCTOR"}>INSTRUCTOR</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

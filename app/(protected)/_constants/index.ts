@@ -1,4 +1,4 @@
-export const USER_LINKS = [
+export const STUDENT_LINKS = [
   {
     title: "Perfil",
     path: "/profile",
@@ -20,9 +20,9 @@ export const ADMIN_LINKS = [
   },
 ]
 
-export const PROF_LINKS = [
+export const INSTRUCTOR_LINKS = [
   {
-    title: "Professor",
+    title: "Perfil",
     path: "/client",
   },
   {
@@ -32,8 +32,8 @@ export const PROF_LINKS = [
 ]
 
 export const ROLES = {
-  PROF: "PROF",
-  USER: "USER",
+  INSTRUCTOR: "INSTRUCTOR",
+  STUDENT: "STUDENT",
   ADMIN: "ADMIN"
 }
 
@@ -44,12 +44,12 @@ export interface Link {
 
 export interface RoleLinks {
   ADMIN: Link[];
-  PROF: Link[];
-  USER: Link[];
+  INSTRUCTOR: Link[];
+  STUDENT: Link[];
 }
 
 export const links: RoleLinks = {
   ADMIN: ADMIN_LINKS,
-  PROF: PROF_LINKS,
-  USER: USER_LINKS
+  INSTRUCTOR: INSTRUCTOR_LINKS,
+  STUDENT: STUDENT_LINKS
 };

@@ -16,7 +16,6 @@ const Sidebar = () => {
 
   const icons: { [key: string]: any } = {
     "Perfil": <FaUser />,
-    "Prof": <FaUser />,
     "Settings": <FaCog />,
     "Admin": <FaUser />,
   };

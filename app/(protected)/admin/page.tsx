@@ -8,8 +8,15 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import RoleGate from "@/components/auth/role-gate";
 import FormSuccess from "@/components/form-success";
 import { admin } from "@/actions/admin";
+import useAuthCheck from "../../../hooks/use-auth-check";
+import Spinner from "../../../components/spinner";
 
 export default function AdminPage() {
+  const { session } = useAuthCheck();
+
+  if (!session?.user) {
+    return <Spinner />
+  }
   const handleApiRoute = async () => {
     try {
       const response = await fetch("/api/admin");

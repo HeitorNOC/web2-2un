@@ -108,19 +108,23 @@ export const RegisterSchema = z
     path: ["passwordConfirmation"],
   });
 
-export const studentProfileSchema = z.object({
-  cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
-  height: z.number().refine(val => val > 0, { message: "Altura deve ser um valor positivo" }),
-  weight: z.number().refine(val => val > 0, { message: "Peso deve ser um valor positivo" }),
-  bodyFat: z.number().refine(val => val >= 0 && val <= 100, { message: "Percentual de gordura deve estar entre 0 e 100" }),
-  comorbidity: z.string().optional(),
-});
-
-export const instructorProfileSchema = z.object({
-  cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
-  cref: z.string().min(5, "CREF deve ter no mínimo 5 caracteres"),
-});
-
-export const adminProfileSchema = z.object({
-  cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
-});
+  export const studentProfileSchema = z.object({
+    cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
+    gender: z.string().min(1, "Gênero é obrigatório"),
+    phone: z.string().min(10, "Telefone deve ter no mínimo 10 caracteres"),
+    birthDate: z.string().min(10, "Data de Nascimento é obrigatória"),
+    height: z.string().refine(val => !isNaN(parseFloat(val)) && parseFloat(val) > 0, { message: "Altura deve ser um valor positivo" }),
+    weight: z.string().refine(val => !isNaN(parseFloat(val)) && parseFloat(val) > 0, { message: "Peso deve ser um valor positivo" }),
+    bodyFat: z.string().refine(val => !isNaN(parseFloat(val)) && parseFloat(val) >= 0 && parseFloat(val) <= 100, { message: "Percentual de gordura deve estar entre 0 e 100" }),
+    comorbidity: z.string().optional(),
+  });
+  
+  export const instructorProfileSchema = z.object({
+    cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
+    phone: z.string().min(10, "Telefone deve ter no mínimo 10 caracteres"),
+    cref: z.string().min(5, "CREF deve ter no mínimo 5 caracteres"),
+  });
+  
+  export const adminProfileSchema = z.object({
+    cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
+  });

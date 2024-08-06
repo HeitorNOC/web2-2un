@@ -15,8 +15,8 @@ model User {
   emailVerified               DateTime?
   image                       String?
   password                    String?
-  role                        String                        @default("USER")
-  isActive                    Int
+  role                        String                        @default("STUDENT")
+  isActive                    Int                           @default(2)
   accounts                    Account[]
   isTwoFactorEnabled          Boolean                       @default(false)
   twoFactorConfirmation       TwoFactorConfirmation?
@@ -165,7 +165,7 @@ model Payment {
   paymentDate    DateTime         @default(now())
   planType       Int
   status         String
-  createdAt      DateTime @default(now())
+  createdAt      DateTime         @default(now())
   PaymentHistory PaymentHistory[]
 
   @@index([userId])
