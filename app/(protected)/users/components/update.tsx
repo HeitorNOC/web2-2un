@@ -1,22 +1,22 @@
-import { FC } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { userUpdateSchema } from "@/schemas";
+import { FC } from "react"
+import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { useForm, SubmitHandler } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { userUpdateSchema } from "@/schemas"
 
 interface UpdateUserModalProps {
-  isOpen: boolean;
-  user: any;
-  onConfirm: (data: any) => void;
-  onCancel: () => void;
+  isOpen: boolean
+  user: any
+  onConfirm: (data: any) => void
+  onCancel: () => void
 }
 
 interface UpdateUserFormData {
-  name: string;
-  email: string;
-  role: string;
+  name: string
+  email: string
+  role: string
 }
 
 const UpdateUserModal: FC<UpdateUserModalProps> = ({ isOpen, user, onConfirm, onCancel }) => {
@@ -27,11 +27,11 @@ const UpdateUserModal: FC<UpdateUserModalProps> = ({ isOpen, user, onConfirm, on
       email: user.email,
       role: user.role,
     }
-  });
+  })
 
   const onSubmit: SubmitHandler<UpdateUserFormData> = (data) => {
-    onConfirm(data);
-  };
+    onConfirm(data)
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onCancel}>
@@ -79,7 +79,7 @@ const UpdateUserModal: FC<UpdateUserModalProps> = ({ isOpen, user, onConfirm, on
         </form>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default UpdateUserModal;
+export default UpdateUserModal

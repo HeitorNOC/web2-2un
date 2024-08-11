@@ -1,10 +1,10 @@
-import { User } from "@/types/next-auth";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { User } from "@/types/next-auth"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 
 interface UserInfoProps {
-  user?: User;
-  label: string;
+  user?: User
+  label: string
 }
 
 const UserInfo = ({ user, label }: UserInfoProps) => {
@@ -14,7 +14,7 @@ const UserInfo = ({ user, label }: UserInfoProps) => {
     Email: user?.email,
     Role: user?.role,
     "Two Factor Authentication": user?.isTwoFactorEnabled,
-  };
+  }
 
   return (
     <Card className="w-auto shadow-sm">
@@ -44,7 +44,7 @@ const UserInfo = ({ user, label }: UserInfoProps) => {
         ))}
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default UserInfo;
+export default UserInfo

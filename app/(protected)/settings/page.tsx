@@ -1,18 +1,18 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useTransition, useState } from "react";
-import { useSession } from "next-auth/react";
-import { RiUserSettingsLine } from "react-icons/ri";
+import * as z from "zod"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useTransition, useState } from "react"
+import { useSession } from "next-auth/react"
+import { RiUserSettingsLine } from "react-icons/ri"
 
-import { useCurrentUser } from "@/hooks/use-current-user";
-import { useIsClient } from "@/hooks/use-is-client";
-import Spinner from "@/components/spinner";
-import { SettingsSchema } from "@/schemas";
-import { settings } from "@/actions/settings";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { useCurrentUser } from "@/hooks/use-current-user"
+import { useIsClient } from "@/hooks/use-is-client"
+import Spinner from "@/components/spinner"
+import { SettingsSchema } from "@/schemas"
+import { settings } from "@/actions/settings"
+import { Card, CardHeader, CardContent } from "@/components/ui/card"
 import {
   Form,
   FormField,
@@ -21,32 +21,32 @@ import {
   FormLabel,
   FormDescription,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/password-input";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { PasswordInput } from "@/components/password-input"
+import { Button } from "@/components/ui/button"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import FormError from "@/components/form-error";
-import FormSuccess from "@/components/form-success";
+} from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
+import FormError from "@/components/form-error"
+import FormSuccess from "@/components/form-success"
 
 export default function SettingsPage() {
-  const user = useCurrentUser();
+  const user = useCurrentUser()
 
-  const { update } = useSession();
+  const { update } = useSession()
 
-  const [error, setError] = useState<string | undefined>();
-  const [success, setSuccess] = useState<string | undefined>();
+  const [error, setError] = useState<string | undefined>()
+  const [success, setSuccess] = useState<string | undefined>()
 
-  const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition()
 
-  //const isClient = useIsClient();
+  //const isClient = useIsClient()
 
   const form = useForm<z.infer<typeof SettingsSchema>>({
     resolver: zodResolver(SettingsSchema),
@@ -59,31 +59,31 @@ export default function SettingsPage() {
       role: user?.role || undefined,
       isTwoFactorEnabled: user?.isTwoFactorEnabled || undefined,
     },
-  });
+  })
 
   const onSubmit = async (values: z.infer<typeof SettingsSchema>) => {
     try {
       startTransition(async () => {
-        const data = await settings(values);
+        const data = await settings(values)
 
         if (data.error) {
-          setError(data.error);
+          setError(data.error)
         }
 
         if (data.success) {
-          await update();
-          setSuccess(data.success);
+          await update()
+          setSuccess(data.success)
         }
-      });
+      })
     } catch (error) {
-      setError("Something went wrong!");
+      setError("Something went wrong!")
     } finally {
-      setError("");
-      setSuccess("");
+      setError("")
+      setSuccess("")
     }
-  };
+  }
 
-  //if (!isClient) return <Spinner />;
+  //if (!isClient) return <Spinner />
 
   return (
     <Card className="w-auto shadow-sm">
@@ -267,5 +267,5 @@ export default function SettingsPage() {
         </Form>
       </CardContent>
     </Card>
-  );
+  )
 }

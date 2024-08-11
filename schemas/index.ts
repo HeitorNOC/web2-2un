@@ -1,12 +1,12 @@
-import { Role } from "@/enums/role";
-import { convertTimeStringToMinutes } from "@/utils/convert-time-string-to-minutes";
-import parsePhoneNumberFromString from 'libphonenumber-js';
-import * as z from "zod";
+import { Role } from "@/enums/role"
+import { convertTimeStringToMinutes } from "@/utils/convert-time-string-to-minutes"
+import parsePhoneNumberFromString from 'libphonenumber-js'
+import * as z from "zod"
 
 interface UserData {
-  password?: string;
-  newPassword?: string;
-  newPasswordConfirmation?: string;
+  password?: string
+  newPassword?: string
+  newPasswordConfirmation?: string
 }
 
 const passwordRequired = (
@@ -15,18 +15,18 @@ const passwordRequired = (
   newPasswordField: keyof UserData,
   newPasswordConfirmationField: keyof UserData = "newPasswordConfirmation"
 ) => {
-  const newPasswordEntered = data[newPasswordField] !== undefined;
-  const confirmationEntered = data[newPasswordConfirmationField] !== undefined;
+  const newPasswordEntered = data[newPasswordField] !== undefined
+  const confirmationEntered = data[newPasswordConfirmationField] !== undefined
 
   if (newPasswordEntered && !confirmationEntered) {
-    return false;
+    return false
   }
 
   return !(
     (data[passwordField] && !data[newPasswordField]) ||
     (data[newPasswordField] && !data[passwordField])
-  );
-};
+  )
+}
 
 export const SettingsSchema = z
   .object({
@@ -57,7 +57,7 @@ export const SettingsSchema = z
   .refine((data) => data.newPassword === data.newPasswordConfirmation, {
     message: "As senhas não coincidem.",
     path: ["newPasswordConfirmation"],
-  });
+  })
 
 export const NewPasswordSchema = z
   .object({
@@ -71,13 +71,13 @@ export const NewPasswordSchema = z
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "As senhas não coincidem.",
     path: ["passwordConfirmation"],
-  });
+  })
 
 export const ResetSchema = z.object({
   email: z.string().email({
     message: "Por favor, insira um endereço de e-mail válido, obrigatório.",
   }),
-});
+})
 
 export const LoginSchema = z.object({
   email: z.string().email({
@@ -87,7 +87,7 @@ export const LoginSchema = z.object({
     message: "Por favor, insira sua senha. Senha é obrigatória.",
   }),
   code: z.optional(z.string()),
-});
+})
 
 export const RegisterSchema = z
   .object({
@@ -107,7 +107,7 @@ export const RegisterSchema = z
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "As senhas não coincidem.",
     path: ["passwordConfirmation"],
-  });
+  })
 
   export const studentProfileSchema = z.object({
     cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
@@ -118,17 +118,17 @@ export const RegisterSchema = z
     weight: z.string().refine(val => !isNaN(parseFloat(val)) && parseFloat(val) > 0, { message: "Peso deve ser um valor positivo" }),
     bodyFat: z.string().refine(val => !isNaN(parseFloat(val)) && parseFloat(val) >= 0 && parseFloat(val) <= 100, { message: "Percentual de gordura deve estar entre 0 e 100" }),
     comorbidity: z.string().optional(),
-  });
+  })
   
   export const instructorProfileSchema = z.object({
     cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
     phone: z.string().min(10, "Telefone deve ter no mínimo 10 caracteres"),
     cref: z.string().min(5, "CREF deve ter no mínimo 5 caracteres"),
-  });
+  })
   
   export const adminProfileSchema = z.object({
     cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
-  });
+  })
 
 
   export const userUpdateSchema = z.object({
@@ -146,4 +146,4 @@ export const RegisterSchema = z
         message: "Data de nascimento inválida",
       })
       .optional(),
-  });
+  })

@@ -1,28 +1,28 @@
-"use server";
+"use server"
 
-import * as z from "zod";
-import bcrypt from "bcryptjs";
+import * as z from "zod"
+import bcrypt from "bcryptjs"
 
-import { RegisterSchema } from "@/schemas";
-import { db } from "@/lib/db";
-import { getUserByEmail } from "@/data/user";
-import { generateVerificationToken } from "@/lib/tokens";
-import { sendVerificationEmail } from "@/lib/mail";
+import { RegisterSchema } from "@/schemas"
+import { db } from "@/lib/db"
+import { getUserByEmail } from "@/data/user"
+import { generateVerificationToken } from "@/lib/tokens"
+import { sendVerificationEmail } from "@/lib/mail"
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
-  const validatedFields = RegisterSchema.safeParse(values);
+  const validatedFields = RegisterSchema.safeParse(values)
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields." };
+    return { error: "Invalid fields." }
   }
 
-  const { name, password, email } = validatedFields.data;
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const { name, password, email } = validatedFields.data
+  const hashedPassword = await bcrypt.hash(password, 10)
 
-  const existingUser = await getUserByEmail(email);
+  const existingUser = await getUserByEmail(email)
 
   if (existingUser) {
-    return { error: "User email already exists." };
+    return { error: "User email already exists." }
   }
 
   await db.user.create({
@@ -30,12 +30,13 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
       name,
       email,
       password: hashedPassword,
-      isActive: 2
+      isActive: false
     },
-  });
+  })
 
-  const verificationToken = await generateVerificationToken(email);
-  const res = await sendVerificationEmail(verificationToken.email, verificationToken.token);
+  const verificationToken = await generateVerificationToken(email)
+  const res = await sendVerificationEmail(verificationToken.email, verificationToken.token)
+  console.log('res: ', res)
 
-  return { success: "Registro realizado. Verifique seu Email!" };
-};
+  return { success: "Registro realizado. Verifique seu Email!" }
+}

@@ -20,7 +20,7 @@ const Spinner = () => {
       </svg>
       <span className="sr-only">Loading...</span>
     </>
-  );
-};
+  )
+}
 
-export default Spinner;
+export default Spinner

@@ -1,13 +1,13 @@
-import { FC } from "react";
+import { FC } from "react"
 
-import { Button } from "@/components/ui/button";
-import { User } from "@/types/next-auth";
+import { Button } from "@/components/ui/button"
+import { User } from "@/types/next-auth"
 
 interface UserListProps {
-  users: User[];
-  loading: boolean;
-  onEdit: (user: User) => void;
-  onDelete: (user: User) => void;
+  users: User[]
+  loading: boolean
+  onEdit: (user: User) => void
+  onDelete: (user: User) => void
 }
 
 const UserList: FC<UserListProps> = ({ users, loading, onEdit, onDelete }) => {
@@ -47,7 +47,7 @@ const UserList: FC<UserListProps> = ({ users, loading, onEdit, onDelete }) => {
         </tbody>
       </table>
     </div>
-  );
-};
+  )
+}
 
-export default UserList;
+export default UserList

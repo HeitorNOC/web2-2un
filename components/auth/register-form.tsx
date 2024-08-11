@@ -1,15 +1,15 @@
-"use client";
+"use client"
 
-import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
+import { useState, useTransition } from "react"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import Link from "next/link"
 
-import { useIsClient } from "@/hooks/use-is-client";
-import Spinner from "../spinner";
-import { RegisterSchema } from "@/schemas";
-import CardWrapper from "./card-wrapper";
+import { useIsClient } from "@/hooks/use-is-client"
+import Spinner from "../spinner"
+import { RegisterSchema } from "@/schemas"
+import CardWrapper from "./card-wrapper"
 import {
   Form,
   FormControl,
@@ -17,21 +17,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { PasswordInput } from "../password-input";
-import { Button } from "../ui/button";
-import FormError from "../form-error";
-import FormSuccess from "../form-success";
-import { register } from "@/actions/register";
+} from "../ui/form"
+import { Input } from "../ui/input"
+import { PasswordInput } from "../password-input"
+import { Button } from "../ui/button"
+import FormError from "../form-error"
+import FormSuccess from "../form-success"
+import { register } from "@/actions/register"
 
 const RegisterForm = () => {
-  //const isClient = useIsClient();
+  //const isClient = useIsClient()
 
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
+  const [error, setError] = useState<string>("")
+  const [success, setSuccess] = useState<string>("")
 
-  const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition()
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -41,22 +41,22 @@ const RegisterForm = () => {
       password: "",
       passwordConfirmation: "",
     },
-  });
+  })
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     startTransition(() => {
       register(values).then((data) => {
-        if (data.success) setSuccess(data.success);
-        if (data?.error) setError(data.error);
-      });
-    });
+        if (data.success) setSuccess(data.success)
+        if (data?.error) setError(data.error)
+      })
+    })
 
-    form.reset();
-    setSuccess("");
-    setError("");
-  };
+    form.reset()
+    setSuccess("")
+    setError("")
+  }
 
-  //if (!isClient) return <Spinner />;
+  //if (!isClient) return <Spinner />
 
   return (
     <CardWrapper
@@ -167,7 +167,7 @@ const RegisterForm = () => {
         </form>
       </Form>
     </CardWrapper>
-  );
-};
+  )
+}
 
-export default RegisterForm;
+export default RegisterForm

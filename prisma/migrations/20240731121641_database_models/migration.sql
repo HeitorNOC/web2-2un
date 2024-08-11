@@ -12,7 +12,7 @@ CREATE TABLE "AdministratorAdditionalData" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "AdministratorAdditionalData_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
+)
 
 -- CreateTable
 CREATE TABLE "StudentAdditionalData" (
@@ -35,7 +35,7 @@ CREATE TABLE "StudentAdditionalData" (
     "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "StudentAdditionalData_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "StudentAdditionalData_assignedInstructorId_fkey" FOREIGN KEY ("assignedInstructorId") REFERENCES "InstructorAdditionalData" ("id") ON DELETE SET NULL ON UPDATE CASCADE
-);
+)
 
 -- CreateTable
 CREATE TABLE "InstructorAdditionalData" (
@@ -48,7 +48,7 @@ CREATE TABLE "InstructorAdditionalData" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "InstructorAdditionalData_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
+)
 
 -- CreateTable
 CREATE TABLE "Machine" (
@@ -59,7 +59,7 @@ CREATE TABLE "Machine" (
     "status" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
-);
+)
 
 -- CreateTable
 CREATE TABLE "StudentEvolution" (
@@ -71,7 +71,7 @@ CREATE TABLE "StudentEvolution" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "StudentEvolution_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
+)
 
 -- CreateTable
 CREATE TABLE "Payment" (
@@ -84,7 +84,7 @@ CREATE TABLE "Payment" (
     "status" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Payment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
+)
 
 -- CreateTable
 CREATE TABLE "PaymentHistory" (
@@ -94,10 +94,10 @@ CREATE TABLE "PaymentHistory" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "PaymentHistory_paymentId_fkey" FOREIGN KEY ("paymentId") REFERENCES "Payment" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "PaymentHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
+)
 
 -- RedefineTables
-PRAGMA foreign_keys=OFF;
+PRAGMA foreign_keys=OFF
 CREATE TABLE "new_User" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT,
@@ -109,39 +109,39 @@ CREATE TABLE "new_User" (
     "role" TEXT NOT NULL DEFAULT 'USER',
     "isActive" INTEGER NOT NULL,
     "isTwoFactorEnabled" BOOLEAN NOT NULL DEFAULT false
-);
-INSERT INTO "new_User" ("email", "emailVerified", "id", "image", "isTwoFactorEnabled", "name", "password", "role") SELECT "email", "emailVerified", "id", "image", "isTwoFactorEnabled", "name", "password", "role" FROM "User";
-DROP TABLE "User";
-ALTER TABLE "new_User" RENAME TO "User";
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
-CREATE UNIQUE INDEX "User_cpf_key" ON "User"("cpf");
-CREATE INDEX "User_role_idx" ON "User"("role");
-PRAGMA foreign_key_check;
-PRAGMA foreign_keys=ON;
+)
+INSERT INTO "new_User" ("email", "emailVerified", "id", "image", "isTwoFactorEnabled", "name", "password", "role") SELECT "email", "emailVerified", "id", "image", "isTwoFactorEnabled", "name", "password", "role" FROM "User"
+DROP TABLE "User"
+ALTER TABLE "new_User" RENAME TO "User"
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email")
+CREATE UNIQUE INDEX "User_cpf_key" ON "User"("cpf")
+CREATE INDEX "User_role_idx" ON "User"("role")
+PRAGMA foreign_key_check
+PRAGMA foreign_keys=ON
 
 -- CreateIndex
-CREATE INDEX "AdministratorAdditionalData_id_idx" ON "AdministratorAdditionalData"("id");
+CREATE INDEX "AdministratorAdditionalData_id_idx" ON "AdministratorAdditionalData"("id")
 
 -- CreateIndex
-CREATE INDEX "StudentAdditionalData_id_idx" ON "StudentAdditionalData"("id");
+CREATE INDEX "StudentAdditionalData_id_idx" ON "StudentAdditionalData"("id")
 
 -- CreateIndex
-CREATE UNIQUE INDEX "InstructorAdditionalData_cref_key" ON "InstructorAdditionalData"("cref");
+CREATE UNIQUE INDEX "InstructorAdditionalData_cref_key" ON "InstructorAdditionalData"("cref")
 
 -- CreateIndex
-CREATE INDEX "InstructorAdditionalData_id_idx" ON "InstructorAdditionalData"("id");
+CREATE INDEX "InstructorAdditionalData_id_idx" ON "InstructorAdditionalData"("id")
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Machine_serialNumber_key" ON "Machine"("serialNumber");
+CREATE UNIQUE INDEX "Machine_serialNumber_key" ON "Machine"("serialNumber")
 
 -- CreateIndex
-CREATE INDEX "Machine_id_idx" ON "Machine"("id");
+CREATE INDEX "Machine_id_idx" ON "Machine"("id")
 
 -- CreateIndex
-CREATE INDEX "Payment_userId_idx" ON "Payment"("userId");
+CREATE INDEX "Payment_userId_idx" ON "Payment"("userId")
 
 -- CreateIndex
-CREATE INDEX "PaymentHistory_paymentId_idx" ON "PaymentHistory"("paymentId");
+CREATE INDEX "PaymentHistory_paymentId_idx" ON "PaymentHistory"("paymentId")
 
 -- CreateIndex
-CREATE INDEX "PaymentHistory_userId_idx" ON "PaymentHistory"("userId");
+CREATE INDEX "PaymentHistory_userId_idx" ON "PaymentHistory"("userId")

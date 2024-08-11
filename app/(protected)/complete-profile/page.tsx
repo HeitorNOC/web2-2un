@@ -1,42 +1,42 @@
-"use client";
+"use client"
 
-import { useForm, SubmitHandler, FieldErrors, UseFormRegister } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { startTransition, useState } from "react";
-import { completeProfileAction } from "../../../actions/complete-profile";
-import { Role } from "../../../enums/role";
-import { studentProfileSchema, instructorProfileSchema, adminProfileSchema } from "../../../schemas";
-import useAuthCheck from "../../../hooks/use-auth-check";
-import Spinner from "../../../components/spinner";
+import { useForm, SubmitHandler, FieldErrors, UseFormRegister } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { startTransition, useState } from "react"
+import { completeProfileAction } from "../../../actions/complete-profile"
+import { Role } from "../../../enums/role"
+import { studentProfileSchema, instructorProfileSchema, adminProfileSchema } from "../../../schemas"
+import useAuthCheck from "../../../hooks/use-auth-check"
+import Spinner from "../../../components/spinner"
 
 type StudentProfileFormData = {
-  cpf: string;
-  gender: string;
-  phone: string;
-  birthDate: string;
-  height: string;  
-  weight: string;  
-  bodyFat: string; 
-  comorbidity?: string;
-};
+  cpf: string
+  gender: string
+  phone: string
+  birthDate: string
+  height: string  
+  weight: string  
+  bodyFat: string 
+  comorbidity?: string
+}
 
 type InstructorProfileFormData = {
-  cpf: string;
-  phone: string;
-  cref: string;
-};
+  cpf: string
+  phone: string
+  cref: string
+}
 
 type AdminProfileFormData = {
-  cpf: string;
-};
+  cpf: string
+}
 
 const StudentProfileForm = ({
   register,
   errors,
 }: {
-  register: UseFormRegister<StudentProfileFormData>;
-  errors: FieldErrors<StudentProfileFormData>;
+  register: UseFormRegister<StudentProfileFormData>
+  errors: FieldErrors<StudentProfileFormData>
 }) => (
   <>
     <div className="mb-4">
@@ -80,14 +80,14 @@ const StudentProfileForm = ({
       {errors.comorbidity && <span className="text-red-600 text-sm">{errors.comorbidity.message}</span>}
     </div>
   </>
-);
+)
 
 const InstructorProfileForm = ({
   register,
   errors,
 }: {
-  register: UseFormRegister<InstructorProfileFormData>;
-  errors: FieldErrors<InstructorProfileFormData>;
+  register: UseFormRegister<InstructorProfileFormData>
+  errors: FieldErrors<InstructorProfileFormData>
 }) => (
   <>
     <div className="mb-4">
@@ -101,35 +101,35 @@ const InstructorProfileForm = ({
       {errors.cref && <span className="text-red-600 text-sm">{errors.cref.message}</span>}
     </div>
   </>
-);
+)
 
 const CompleteProfile = () => {
-  const { session } = useAuthCheck();
-  const router = useRouter();
-  const [error, setError] = useState<string | undefined>();
-  const [success, setSuccess] = useState<string | undefined>();
+  const { session } = useAuthCheck()
+  const router = useRouter()
+  const [error, setError] = useState<string | undefined>()
+  const [success, setSuccess] = useState<string | undefined>()
 
   const schema = session?.user?.role === Role.STUDENT
     ? studentProfileSchema
     : session?.user?.role === Role.INSTRUCTOR
       ? instructorProfileSchema
-      : adminProfileSchema;
+      : adminProfileSchema
 
   const { register, handleSubmit, formState: { errors } } = useForm<
     StudentProfileFormData | InstructorProfileFormData | AdminProfileFormData
   >({
     resolver: zodResolver(schema),
-  });
+  })
 
   const onSubmit: SubmitHandler<
   StudentProfileFormData | InstructorProfileFormData | AdminProfileFormData
 > = (data) => {
-  const userId = session?.user?.id;
-  const { role } = session?.user;
-  let additionalData = {};
+  const userId = session?.user?.id
+  const { role } = session?.user
+  let additionalData = {}
 
   if (role === Role.STUDENT) {
-    const studentData = data as StudentProfileFormData;
+    const studentData = data as StudentProfileFormData
     additionalData = {
       height: (studentData.height),
       weight: (studentData.weight),
@@ -138,13 +138,13 @@ const CompleteProfile = () => {
       gender: studentData.gender,
       phone: studentData.phone,
       birthDate: new Date(studentData.birthDate).toISOString(),
-    };
+    }
   } else if (role === Role.INSTRUCTOR) {
-    const instructorData = data as InstructorProfileFormData;
+    const instructorData = data as InstructorProfileFormData
     additionalData = {
       cref: instructorData.cref,
       phone: instructorData.phone,
-    };
+    }
   }
 
   const submitData = async () => {
@@ -154,27 +154,27 @@ const CompleteProfile = () => {
         role,
         cpf: data.cpf,
         additionalData,
-      });
+      })
 
       if (res.error) {
-        setError(res.error);
+        setError(res.error)
       }
 
       if (res.success) {
-        setSuccess(res.success);
-      router.push('/');
+        setSuccess(res.success)
+      router.push('/')
       }
     } catch (e) {
-      console.log(e);
-      setError("Something went wrong!");
+      console.log(e)
+      setError("Something went wrong!")
     }
-  };
+  }
 
-  submitData();
-};
+  submitData()
+}
 
   if (!session?.user) {
-    return <Spinner />;
+    return <Spinner />
   }
 
   return (
@@ -199,7 +199,7 @@ const CompleteProfile = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CompleteProfile;
+export default CompleteProfile

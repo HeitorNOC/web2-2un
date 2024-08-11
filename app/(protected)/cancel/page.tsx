@@ -1,32 +1,32 @@
 // pages/cancel.tsx
-"use client";
+"use client"
 
-import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 const CancelPage = () => {
-  const searchParams = useSearchParams();
-  const session_id = searchParams.get('session_id');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+  const searchParams = useSearchParams()
+  const session_id = searchParams.get('session_id')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
     if (session_id) {
       // A lógica para tratar um cancelamento pode ser implementada aqui
-      setLoading(false);
+      setLoading(false)
     } else {
-      setError('Sessão não encontrada. Cancelamento não pôde ser verificado.');
-      setLoading(false);
+      setError('Sessão não encontrada. Cancelamento não pôde ser verificado.')
+      setLoading(false)
     }
-  }, [session_id]);
+  }, [session_id])
 
   if (loading) {
-    return <p>Verificando cancelamento...</p>;
+    return <p>Verificando cancelamento...</p>
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <p>{error}</p>
   }
 
   return (
@@ -40,7 +40,7 @@ const CancelPage = () => {
         Tentar Novamente
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default CancelPage;
+export default CancelPage

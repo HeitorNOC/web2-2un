@@ -1,5 +1,4 @@
 .sidebar {
-    /* width: 80px; */ /* Reduced width */
     height: 100vh;
     position: fixed;
     left: 0;
@@ -10,18 +9,18 @@
     /* z-index: 1000; */
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center align items */
+    align-items: center;
   }
   
   .sidebar a {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center align items */
-    padding: 10px 20px; /* Vertical padding for more compact links */
+    align-items: center;
+    padding: 10px 20px; 
     text-decoration: none;
     color: white;
-    width: 100%; /* Make the link occupy full width */
-    border-bottom: 1px solid #444; /* Separator line */
+    width: 100%; 
+    border-bottom: 1px solid #444;
     transition: background-color 0.3s;
   }
   
@@ -32,20 +31,19 @@
   .link-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center align items */
-    margin: 10px 0; /* Space between items */
+    align-items: center; 
+    margin: 10px 0; 
   }
   
   .icon {
-    font-size: 20px; /* Adjust icon size */
+    font-size: 20px;
   }
   
   .link-title {
-    font-size: 12px; /* Smaller font size for titles */
-    margin-top: 5px; /* Space between icon and text */
+    font-size: 12px; 
+    margin-top: 5px; 
   }
-  
-  /* Responsiveness: Hide the sidebar on smaller screens */
+
   @media (max-width: 768px) {
     .sidebar {
       width: 0;

@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { useCurrentRole } from "@/hooks/use-current-role";
-import PageTypeCard from "../_components/page-type-card";
+import { useCurrentRole } from "@/hooks/use-current-role"
+import PageTypeCard from "../_components/page-type-card"
 
 export default function AdminPage() {
-  const role = useCurrentRole();
+  const role = useCurrentRole()
 
   return (
     <div>
@@ -13,5 +13,5 @@ export default function AdminPage() {
         role={role}
       />
     </div>
-  );
+  )
 }

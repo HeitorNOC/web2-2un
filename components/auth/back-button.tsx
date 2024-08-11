@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import Link from "next/link";
+import Link from "next/link"
 
-import { Button } from "../ui/button";
+import { Button } from "../ui/button"
 
 type BackButtonProps = {
-  href: string;
-  label: string;
-};
+  href: string
+  label: string
+}
 
 const BackButton = ({ href, label }: BackButtonProps) => {
   return (
@@ -19,7 +19,7 @@ const BackButton = ({ href, label }: BackButtonProps) => {
     >
       <Link href={href}>{label}</Link>
     </Button>
-  );
-};
+  )
+}
 
-export default BackButton;
+export default BackButton

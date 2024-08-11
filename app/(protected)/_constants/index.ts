@@ -38,18 +38,18 @@ export const ROLES = {
 }
 
 export interface Link {
-  title: string;
-  path: string;
+  title: string
+  path: string
 }
 
 export interface RoleLinks {
-  ADMIN: Link[];
-  INSTRUCTOR: Link[];
-  STUDENT: Link[];
+  ADMIN: Link[]
+  INSTRUCTOR: Link[]
+  STUDENT: Link[]
 }
 
 export const links: RoleLinks = {
   ADMIN: ADMIN_LINKS,
   INSTRUCTOR: INSTRUCTOR_LINKS,
   STUDENT: STUDENT_LINKS
-};
+}

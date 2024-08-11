@@ -1,8 +1,8 @@
-import { currentRole } from "@/lib/auth";
-import PageTypeCard from "../_components/page-type-card";
+import { currentRole } from "@/lib/auth"
+import PageTypeCard from "../_components/page-type-card"
 
 export default async function AdminPage() {
-  const role = await currentRole();
+  const role = await currentRole()
 
   return (
     <div>
@@ -11,5 +11,5 @@ export default async function AdminPage() {
         role={role}
       />
     </div>
-  );
+  )
 }

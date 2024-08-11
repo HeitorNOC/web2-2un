@@ -1,14 +1,14 @@
-"use client";
+"use client"
 
-import { useRouter } from 'next/navigation';
-import { PlanType } from '@/enums/plan';
+import { useRouter } from 'next/navigation'
+import { PlanType } from '@/enums/plan'
 
 const PaymentPage = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   const handlePlanSelection = (planType: PlanType) => {
-    router.push(`/payment/${planType}`);
-  };
+    router.push(`/payment/${planType}`)
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-8">
@@ -76,7 +76,7 @@ const PaymentPage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PaymentPage;
+export default PaymentPage

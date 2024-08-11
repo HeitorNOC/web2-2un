@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { useState, useTransition } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod"
+import { useForm } from "react-hook-form"
+import { useState, useTransition } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
 
-import { ResetSchema } from "@/schemas";
-import CardWrapper from "@/components/auth/card-wrapper";
-import { Input } from "@/components/ui/input";
+import { ResetSchema } from "@/schemas"
+import CardWrapper from "@/components/auth/card-wrapper"
+import { Input } from "@/components/ui/input"
 import {
   Form,
   FormControl,
@@ -15,36 +15,36 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/form"
+import { Button } from "@/components/ui/button"
 
-import FormError from "@/components/form-error";
-import FormSuccess from "@/components/form-success";
-import { reset } from "@/actions/reset";
+import FormError from "@/components/form-error"
+import FormSuccess from "@/components/form-success"
+import { reset } from "@/actions/reset"
 
 const ResetPasswordForm = () => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
-  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>("")
+  const [success, setSuccess] = useState<string | undefined>("")
+  const [isPending, startTransition] = useTransition()
 
   const form = useForm<z.infer<typeof ResetSchema>>({
     resolver: zodResolver(ResetSchema),
     defaultValues: {
       email: "",
     },
-  });
+  })
 
   const onSubmit = (values: z.infer<typeof ResetSchema>) => {
-    setError("");
-    setSuccess("");
+    setError("")
+    setSuccess("")
 
     startTransition(() => {
       reset(values).then((data) => {
-        setError(data?.error);
-        setSuccess(data?.success);
-      });
-    });
-  };
+        setError(data?.error)
+        setSuccess(data?.success)
+      })
+    })
+  }
 
   return (
     <CardWrapper
@@ -89,7 +89,7 @@ const ResetPasswordForm = () => {
         </form>
       </Form>
     </CardWrapper>
-  );
-};
+  )
+}
 
-export default ResetPasswordForm;
+export default ResetPasswordForm

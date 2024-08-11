@@ -1,18 +1,18 @@
 "use server"
 
-import { Role } from "@/enums/role";
-import { db } from "@/lib/db";
-import { adminProfileSchema, instructorProfileSchema, studentProfileSchema } from "@/schemas";
+import { Role } from "@/enums/role"
+import { db } from "@/lib/db"
+import { adminProfileSchema, instructorProfileSchema, studentProfileSchema } from "@/schemas"
 
 interface CompleteProfileActionProps {
-    userId: string;
-    role: string;
-    cpf: string;
-    additionalData: any;
+    userId: string
+    role: string
+    cpf: string
+    additionalData: any
 }
 
 export const completeProfileAction = async ({ userId, role, cpf, additionalData }: CompleteProfileActionProps) => {
-    let validatedData;
+    let validatedData
 
 
     try {
@@ -24,11 +24,11 @@ export const completeProfileAction = async ({ userId, role, cpf, additionalData 
                     weight: additionalData.weight.toString(),
                     bodyFat: additionalData.bodyFat.toString(),
                     ...additionalData,
-                });
+                })
 
                 if (!validatedData.success) {
                     console.log(validatedData.error.errors)
-                    return { error: "Invalid fields." };
+                    return { error: "Invalid fields." }
                 }
                 await db.studentAdditionalData.create({
                     data: {
@@ -42,15 +42,15 @@ export const completeProfileAction = async ({ userId, role, cpf, additionalData 
                         birthDate: new Date(validatedData.data.birthDate).toISOString(),
                         phone: validatedData.data.phone,
                     },
-                });
-                break;
+                })
+                break
             case Role.INSTRUCTOR:
                 validatedData = instructorProfileSchema.safeParse({
                     cpf,
                     ...additionalData,
-                });
+                })
                 if (!validatedData.success) {
-                    return { error: "Invalid fields." };
+                    return { error: "Invalid fields." }
                 }
                 await db.instructorAdditionalData.create({
                     data: {
@@ -58,34 +58,34 @@ export const completeProfileAction = async ({ userId, role, cpf, additionalData 
                         cref: validatedData.data.cref,
                         phone: validatedData.data.phone,
                     },
-                });
-                break;
+                })
+                break
             case Role.ADMIN:
                 validatedData = adminProfileSchema.safeParse({
                     cpf,
-                });
+                })
                 if (!validatedData.success) {
-                    return { error: "Invalid fields." };
+                    return { error: "Invalid fields." }
                 }
                 await db.administratorAdditionalData.create({
                     data: {
                         userId,
                     },
-                });
-                break;
+                })
+                break
         }
 
         if (validatedData) {
             await db.user.update({
                 where: { id: userId },
                 data: { cpf: validatedData.data.cpf },
-            });
+            })
         } else {
-            return { error: 'Erro ao completar o cadastro.' };
+            return { error: 'Erro ao completar o cadastro.' }
         }
         return { success: "Cadastro finalizado com sucesso." }
     } catch (error) {
-        console.error('Error completing profile:', error);
-        throw new Error('Erro ao completar o cadastro.');
+        console.error('Error completing profile:', error)
+        throw new Error('Erro ao completar o cadastro.')
     }
-};
+}

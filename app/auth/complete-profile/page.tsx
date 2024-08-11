@@ -1,35 +1,35 @@
-import { useSession } from 'next-auth/react';
-import { useForm, SubmitHandler, FieldErrors, UseFormRegister } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/router';
-import { studentProfileSchema, instructorProfileSchema, adminProfileSchema } from '@/schemas/index';
-import { Role } from '@/enums/role';
-import { startTransition } from 'react';
-import { completeProfileAction } from '@/actions/complete-profile';
+import { useSession } from 'next-auth/react'
+import { useForm, SubmitHandler, FieldErrors, UseFormRegister } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/router'
+import { studentProfileSchema, instructorProfileSchema, adminProfileSchema } from '@/schemas/index'
+import { Role } from '@/enums/role'
+import { startTransition } from 'react'
+import { completeProfileAction } from '@/actions/complete-profile'
 
 type StudentProfileFormData = {
-  cpf: string;
-  height: number;
-  weight: number;
-  bodyFat: number;
-  comorbidity?: string;
-};
+  cpf: string
+  height: number
+  weight: number
+  bodyFat: number
+  comorbidity?: string
+}
 
 type InstructorProfileFormData = {
-  cpf: string;
-  cref: string;
-};
+  cpf: string
+  cref: string
+}
 
 type AdminProfileFormData = {
-  cpf: string;
-};
+  cpf: string
+}
 
 const StudentProfileForm = ({
   register,
   errors,
 }: {
-  register: UseFormRegister<StudentProfileFormData>;
-  errors: FieldErrors<StudentProfileFormData>;
+  register: UseFormRegister<StudentProfileFormData>
+  errors: FieldErrors<StudentProfileFormData>
 }) => (
   <>
     <label>
@@ -53,58 +53,58 @@ const StudentProfileForm = ({
       {errors.comorbidity && <span>{errors.comorbidity.message}</span>}
     </label>
   </>
-);
+)
 
 const InstructorProfileForm = ({
   register,
   errors,
 }: {
-  register: UseFormRegister<InstructorProfileFormData>;
-  errors: FieldErrors<InstructorProfileFormData>;
+  register: UseFormRegister<InstructorProfileFormData>
+  errors: FieldErrors<InstructorProfileFormData>
 }) => (
   <label>
     CREF:
     <input type="text" {...register('cref')} required />
     {errors.cref && <span>{errors.cref.message}</span>}
   </label>
-);
+)
 
 const CompleteProfile = () => {
-  const { data: session } = useSession();
-  const router = useRouter();
+  const { data: session } = useSession()
+  const router = useRouter()
 
   const schema = session?.user?.role === Role.STUDENT
     ? studentProfileSchema
     : session?.user?.role === Role.INSTRUCTOR
     ? instructorProfileSchema
-    : adminProfileSchema;
+    : adminProfileSchema
 
   const { register, handleSubmit, formState: { errors } } = useForm<
     StudentProfileFormData | InstructorProfileFormData | AdminProfileFormData
   >({
     resolver: zodResolver(schema),
-  });
+  })
 
   const onSubmit: SubmitHandler<
     StudentProfileFormData | InstructorProfileFormData | AdminProfileFormData
   > = (data) => {
-    const userId = session?.user?.id;
-    const { role } = session?.user;
-    let additionalData = {};
+    const userId = session?.user?.id
+    const { role } = session?.user
+    let additionalData = {}
 
     if (role === Role.STUDENT) {
-      const studentData = data as StudentProfileFormData;
+      const studentData = data as StudentProfileFormData
       additionalData = {
         height: parseFloat(studentData.height.toString()),
         weight: parseFloat(studentData.weight.toString()),
         bodyFat: parseFloat(studentData.bodyFat.toString()),
         comorbidity: studentData.comorbidity,
-      };
+      }
     } else if (role === Role.INSTRUCTOR) {
-      const instructorData = data as InstructorProfileFormData;
+      const instructorData = data as InstructorProfileFormData
       additionalData = {
         cref: instructorData.cref,
-      };
+      }
     }
 
     startTransition(() => {
@@ -113,10 +113,10 @@ const CompleteProfile = () => {
         role,
         cpf: data.cpf,
         additionalData,
-      });
-      router.push('/');
-    });
-  };
+      })
+      router.push('/')
+    })
+  }
 
   return (
     <div className="complete-profile-container">
@@ -136,7 +136,7 @@ const CompleteProfile = () => {
         <button type="submit">Enviar</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default CompleteProfile;
+export default CompleteProfile

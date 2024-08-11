@@ -1,12 +1,12 @@
-import { FC } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { FC } from "react"
+import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 
 interface DeleteUserModalProps {
-  isOpen: boolean;
-  user: { id: string; name: string } | null;
-  onConfirm: () => void;
-  onCancel: () => void;
+  isOpen: boolean
+  user: { id: string name: string } | null
+  onConfirm: () => void
+  onCancel: () => void
 }
 
 const DeleteUserModal: FC<DeleteUserModalProps> = ({ isOpen, user, onConfirm, onCancel }) => {
@@ -29,7 +29,7 @@ const DeleteUserModal: FC<DeleteUserModalProps> = ({ isOpen, user, onConfirm, on
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default DeleteUserModal;
+export default DeleteUserModal

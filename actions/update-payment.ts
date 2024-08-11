@@ -1,26 +1,26 @@
 "use server"
 
-import { db } from '@/lib/db';
-import Stripe from 'stripe';
+import { db } from '@/lib/db'
+import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2024-06-20',
-});
+})
 
 interface UpdatePaymentActionProps {
-  sessionId: string;
+  sessionId: string
 }
 
 export const updatePaymentAction = async ({ sessionId }: UpdatePaymentActionProps) => {
   try {
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    const session = await stripe.checkout.sessions.retrieve(sessionId)
 
     if (!session || !session.metadata || !session.amount_total) return { error: 'Sessão inválida' }
 
-      const userId = session.metadata.userId;
+      const userId = session.metadata.userId
 
       if (!userId) {
-        return { error: 'User ID not found in session metadata' };
+        return { error: 'User ID not found in session metadata' }
       }
       
      const payment =  await db.payment.create({
@@ -32,7 +32,7 @@ export const updatePaymentAction = async ({ sessionId }: UpdatePaymentActionProp
           planType: Number(session.metadata.planType),
           status: session.payment_status,
         },
-      });
+      })
       
       await db.paymentHistory.create({
         data: {
@@ -41,10 +41,10 @@ export const updatePaymentAction = async ({ sessionId }: UpdatePaymentActionProp
         }
       })
 
-      return { success: 'Pagamento atualizado com sucesso' };
+      return { success: 'Pagamento atualizado com sucesso' }
     
   } catch (error) {
-    console.error('Erro ao atualizar o pagamento:', error);
-    throw new Error('Erro ao atualizar o pagamento');
+    console.error('Erro ao atualizar o pagamento:', error)
+    throw new Error('Erro ao atualizar o pagamento')
   }
-};
+}

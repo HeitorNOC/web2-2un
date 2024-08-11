@@ -1,22 +1,22 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { useState } from "react";
-import { FaRegEyeSlash } from "react-icons/fa";
-import { FaRegEye } from "react-icons/fa";
+import * as React from "react"
+import { useState } from "react"
+import { FaRegEyeSlash } from "react-icons/fa"
+import { FaRegEye } from "react-icons/fa"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 export interface PasswordInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
   ({ className, type = "password", ...props }, ref) => {
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false)
 
     const togglePasswordVisibility = () => {
-      setShowPassword(!showPassword);
-    };
+      setShowPassword(!showPassword)
+    }
 
     return (
       <div className="relative">
@@ -36,9 +36,9 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
           {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
         </span>
       </div>
-    );
+    )
   }
-);
-PasswordInput.displayName = "PasswordInput";
+)
+PasswordInput.displayName = "PasswordInput"
 
-export { PasswordInput };
+export { PasswordInput }

@@ -1,6 +1,6 @@
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
 
-import CardWrapper from "./card-wrapper";
+import CardWrapper from "./card-wrapper"
 
 const ErrorCard = () => {
   return (
@@ -14,7 +14,7 @@ const ErrorCard = () => {
         <p className="">Authentication with your auth provider failed!</p>
       </div>
     </CardWrapper>
-  );
-};
+  )
+}
 
-export default ErrorCard;
+export default ErrorCard

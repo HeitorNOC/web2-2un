@@ -1,12 +1,12 @@
-import { currentUser } from "@/lib/auth";
-import UserInfo from "@/components/user-info";
-import useAuthCheck from "../../../hooks/use-auth-check";
-import Spinner from "../../../components/spinner";
+import { currentUser } from "@/lib/auth"
+import UserInfo from "@/components/user-info"
+import useAuthCheck from "../../../hooks/use-auth-check"
+import Spinner from "../../../components/spinner"
 
 export default async function ServerPage() {
-  const user = await currentUser();
+  const user = await currentUser()
 
-  const { session } = useAuthCheck();
+  const { session } = useAuthCheck()
 
   if (!session?.user) {
     return <Spinner />
@@ -17,5 +17,5 @@ export default async function ServerPage() {
       user={user}
       label="Server Page Example"
     />
-  );
+  )
 }

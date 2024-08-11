@@ -1,6 +1,6 @@
-import { google } from "googleapis";
-import dayjs from "dayjs";
-import { db } from "./db";
+import { google } from "googleapis"
+import dayjs from "dayjs"
+import { db } from "./db"
 
 export async function getGoogleOAuthToken(userId: string) {
   const account = await db.account.findFirstOrThrow({

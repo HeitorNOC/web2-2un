@@ -1,7 +1,7 @@
 import Logo from '@/public/Logo.png'
-import { Button } from "@/components/ui/button";
-import LoginButton from "@/components/auth/login-button";
-import Image from "next/image";
+import { Button } from "@/components/ui/button"
+import LoginButton from "@/components/auth/login-button"
+import Image from "next/image"
 
 export default function Home() {
   return (
@@ -32,5 +32,5 @@ export default function Home() {
         </div>
       </div>
     </main>
-  );
+  )
 }

@@ -1,51 +1,51 @@
-"use client";
+"use client"
 
-import { MdOutlineAdminPanelSettings } from "react-icons/md";
-import { toast } from "sonner";
+import { MdOutlineAdminPanelSettings } from "react-icons/md"
+import { toast } from "sonner"
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import RoleGate from "@/components/auth/role-gate";
-import FormSuccess from "@/components/form-success";
-import { admin } from "@/actions/admin";
-import useAuthCheck from "../../../hooks/use-auth-check";
-import Spinner from "../../../components/spinner";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import RoleGate from "@/components/auth/role-gate"
+import FormSuccess from "@/components/form-success"
+import { admin } from "@/actions/admin"
+import useAuthCheck from "../../../hooks/use-auth-check"
+import Spinner from "../../../components/spinner"
 
 export default function AdminPage() {
-  const { session } = useAuthCheck();
+  const { session } = useAuthCheck()
 
   if (!session?.user) {
     return <Spinner />
   }
   const handleApiRoute = async () => {
     try {
-      const response = await fetch("/api/admin");
+      const response = await fetch("/api/admin")
 
       if (response.ok) {
-        toast.success("Allowed API Route!");
+        toast.success("Allowed API Route!")
       } else {
-        toast.error("Forbidden API Route!");
+        toast.error("Forbidden API Route!")
       }
     } catch (error) {
-      console.error("An error occurred while fetching the API:", error);
+      console.error("An error occurred while fetching the API:", error)
     }
-  };
+  }
 
   const handleServerAction = async () => {
     try {
-      const data = await admin();
+      const data = await admin()
 
       if (data.error) {
-        toast.error(data.error);
+        toast.error(data.error)
       }
 
       if (data.success) {
-        toast.success(data.success);
+        toast.success(data.success)
       }
     } catch (error) {
-      console.error("An error occurred during the server action:", error);
+      console.error("An error occurred during the server action:", error)
     }
-  };
+  }
 
   return (
     <Card className="w-auto shadow-sm">
@@ -81,5 +81,5 @@ export default function AdminPage() {
         </RoleGate>
       </CardContent>
     </Card>
-  );
+  )
 }

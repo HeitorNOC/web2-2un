@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import { logout } from "@/actions/logout";
+import { logout } from "@/actions/logout"
 
 const LogoutButton = ({ children }: { children: React.ReactNode }) => {
   const handleLogout = () => {
-    logout();
-  };
+    logout()
+  }
 
   return (
     <span
@@ -14,7 +14,7 @@ const LogoutButton = ({ children }: { children: React.ReactNode }) => {
     >
       {children}
     </span>
-  );
-};
+  )
+}
 
-export default LogoutButton;
+export default LogoutButton

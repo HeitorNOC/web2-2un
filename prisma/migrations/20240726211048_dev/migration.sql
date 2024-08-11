@@ -8,7 +8,7 @@ CREATE TABLE "User" (
     "password" TEXT,
     "role" TEXT NOT NULL DEFAULT 'USER',
     "isTwoFactorEnabled" BOOLEAN NOT NULL DEFAULT false
-);
+)
 
 -- CreateTable
 CREATE TABLE "Account" (
@@ -25,7 +25,7 @@ CREATE TABLE "Account" (
     "id_token" TEXT,
     "session_state" TEXT,
     CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
-);
+)
 
 -- CreateTable
 CREATE TABLE "VerificationToken" (
@@ -33,7 +33,7 @@ CREATE TABLE "VerificationToken" (
     "email" TEXT NOT NULL,
     "token" TEXT NOT NULL,
     "expires" DATETIME NOT NULL
-);
+)
 
 -- CreateTable
 CREATE TABLE "PasswordResetToken" (
@@ -41,7 +41,7 @@ CREATE TABLE "PasswordResetToken" (
     "email" TEXT NOT NULL,
     "token" TEXT NOT NULL,
     "expires" DATETIME NOT NULL
-);
+)
 
 -- CreateTable
 CREATE TABLE "TwoFactorToken" (
@@ -49,41 +49,41 @@ CREATE TABLE "TwoFactorToken" (
     "email" TEXT NOT NULL,
     "token" TEXT NOT NULL,
     "expires" DATETIME NOT NULL
-);
+)
 
 -- CreateTable
 CREATE TABLE "TwoFactorConfirmation" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
     CONSTRAINT "TwoFactorConfirmation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
-);
+)
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email")
 
 -- CreateIndex
-CREATE INDEX "User_role_idx" ON "User"("role");
+CREATE INDEX "User_role_idx" ON "User"("role")
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
+CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId")
 
 -- CreateIndex
-CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
+CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token")
 
 -- CreateIndex
-CREATE UNIQUE INDEX "VerificationToken_email_token_key" ON "VerificationToken"("email", "token");
+CREATE UNIQUE INDEX "VerificationToken_email_token_key" ON "VerificationToken"("email", "token")
 
 -- CreateIndex
-CREATE UNIQUE INDEX "PasswordResetToken_token_key" ON "PasswordResetToken"("token");
+CREATE UNIQUE INDEX "PasswordResetToken_token_key" ON "PasswordResetToken"("token")
 
 -- CreateIndex
-CREATE UNIQUE INDEX "PasswordResetToken_email_token_key" ON "PasswordResetToken"("email", "token");
+CREATE UNIQUE INDEX "PasswordResetToken_email_token_key" ON "PasswordResetToken"("email", "token")
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TwoFactorToken_token_key" ON "TwoFactorToken"("token");
+CREATE UNIQUE INDEX "TwoFactorToken_token_key" ON "TwoFactorToken"("token")
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TwoFactorToken_email_token_key" ON "TwoFactorToken"("email", "token");
+CREATE UNIQUE INDEX "TwoFactorToken_email_token_key" ON "TwoFactorToken"("email", "token")
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TwoFactorConfirmation_userId_key" ON "TwoFactorConfirmation"("userId");
+CREATE UNIQUE INDEX "TwoFactorConfirmation_userId_key" ON "TwoFactorConfirmation"("userId")

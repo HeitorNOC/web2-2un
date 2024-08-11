@@ -1,68 +1,68 @@
 // pages/payment/[planType].tsx
-"use client";
+"use client"
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { loadStripe } from '@stripe/stripe-js';
-import { PlanType } from '@/enums/plan';
-import { useCurrentUser } from '@/hooks/use-current-user';
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { loadStripe } from '@stripe/stripe-js'
+import { PlanType } from '@/enums/plan'
+import { useCurrentUser } from '@/hooks/use-current-user'
 
 const planPrices = {
   [PlanType.NORMAL]: 10000,
   [PlanType.VIP]: 20000,
-};
+}
 
 const Payment = ({params}: any ) => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | undefined>();
-  const [isValidPlan, setIsValidPlan] = useState<boolean>();
-  const [convertedPlanType, setConvertedPlanType] = useState<PlanType | null>(null);
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | undefined>()
+  const [isValidPlan, setIsValidPlan] = useState<boolean>()
+  const [convertedPlanType, setConvertedPlanType] = useState<PlanType | null>(null)
   const user = useCurrentUser()
 
   const isValidPlanType = (value: number): value is PlanType => {
-    return Object.values(PlanType).includes(value);
-  };
+    return Object.values(PlanType).includes(value)
+  }
 
   useEffect(() => {
-    const planTypeNum = parseInt(params.planType, 10);
+    const planTypeNum = parseInt(params.planType, 10)
     if (!isNaN(planTypeNum) && isValidPlanType(planTypeNum)) {
-      setIsValidPlan(true);
-      setConvertedPlanType(planTypeNum);
+      setIsValidPlan(true)
+      setConvertedPlanType(planTypeNum)
     } else {
-      setIsValidPlan(false);
+      setIsValidPlan(false)
     }
-  }, [params.planType]);
+  }, [params.planType])
 
   const handlePayment = async () => {
     if (!convertedPlanType) {
-      setError("Plano inválido.");
-      return;
+      setError("Plano inválido.")
+      return
     }
 
-    setLoading(true);
-    setError(undefined);
+    setLoading(true)
+    setError(undefined)
 
     try {
       const response = await axios.post('/api/create-checkout-session', {
         planType: convertedPlanType,
         amount: planPrices[convertedPlanType],
         userId: user.id
-      });
+      })
 
-      const { sessionId } = response.data;
+      const { sessionId } = response.data
 
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
-      await stripe!.redirectToCheckout({ sessionId });
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
+      await stripe!.redirectToCheckout({ sessionId })
     } catch (error) {
-      setError("Erro ao processar o pagamento. Tente novamente.");
-      setLoading(false);
+      setError("Erro ao processar o pagamento. Tente novamente.")
+      setLoading(false)
     }
-  };
+  }
 
   if (!isValidPlan) {
-    return <p>Plano inválido</p>;
+    return <p>Plano inválido</p>
   }
 
   return (
@@ -80,7 +80,7 @@ const Payment = ({params}: any ) => {
       </button>
       {error && <p className="text-red-600 mt-4">{error}</p>}
     </div>
-  );
-};
+  )
+}
 
-export default Payment;
+export default Payment

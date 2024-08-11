@@ -1,8 +1,8 @@
-import { CheckCircledIcon } from "@radix-ui/react-icons";
+import { CheckCircledIcon } from "@radix-ui/react-icons"
 
 type FormSuccessProps = {
-  message?: string;
-};
+  message?: string
+}
 
 const FormSuccess = ({ message }: FormSuccessProps) => {
   return (
@@ -10,7 +10,7 @@ const FormSuccess = ({ message }: FormSuccessProps) => {
       <CheckCircledIcon className="h-4 w-4 flex-none" />
       <p>{message}</p>
     </div>
-  );
-};
+  )
+}
 
-export default FormSuccess;
+export default FormSuccess

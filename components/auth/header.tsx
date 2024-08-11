@@ -1,9 +1,9 @@
-import Image from "next/image";
+import Image from "next/image"
 import Logo from '@/public/Logo.png'
 
 type HeaderProps = {
-  label: string;
-};
+  label: string
+}
 
 const Header = ({ label }: HeaderProps) => {
   return (
@@ -16,7 +16,7 @@ const Header = ({ label }: HeaderProps) => {
 
       <p className="text-muted-foreground text-sm">{label}</p>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

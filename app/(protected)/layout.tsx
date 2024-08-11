@@ -1,17 +1,17 @@
-import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
-import Sidebar from "./_components/sidebar";
+import { SessionProvider } from "next-auth/react"
+import { auth } from "@/auth"
+import Sidebar from "./_components/sidebar"
 
 export const metadata = {
   title: "Protected Routes",
-};
+}
 
 export default async function ProtectedLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  const session = await auth();
+  const session = await auth()
 
   return (
     <SessionProvider session={session}>
@@ -22,5 +22,5 @@ export default async function ProtectedLayout({
         </div>
       </div>
     </SessionProvider>
-  );
+  )
 }

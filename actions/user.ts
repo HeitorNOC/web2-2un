@@ -1,6 +1,6 @@
 "use server"
 
-import { db } from "../lib/db";
+import { db } from "../lib/db"
 
 export const listUsers = async (role?: string) => {
     let usersToResponse

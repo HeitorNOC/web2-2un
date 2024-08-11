@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import { Roboto_Mono as Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from "next"
+import { Roboto_Mono as Mono } from "next/font/google"
+import "./globals.css"
 
-const mono = Mono({ subsets: ["latin"] });
+const mono = Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: {
@@ -11,12 +11,12 @@ export const metadata: Metadata = {
   },
   description:
     "Web 2 gym system",
-};
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html
@@ -25,5 +25,5 @@ export default function RootLayout({
     >
       <body className={mono.className}>{children}</body>
     </html>
-  );
+  )
 }

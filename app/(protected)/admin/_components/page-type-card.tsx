@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 
 type PageTypeCardProps = {
-  title: string;
-  role: string;
-};
+  title: string
+  role: string
+}
 
 const PageTypeCard = ({ title, role }: PageTypeCardProps) => {
   return (
@@ -20,7 +20,7 @@ const PageTypeCard = ({ title, role }: PageTypeCardProps) => {
         </div>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default PageTypeCard;
+export default PageTypeCard
