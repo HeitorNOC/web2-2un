@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react'
 import { useForm, SubmitHandler, FieldErrors, UseFormRegister } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { studentProfileSchema, instructorProfileSchema, adminProfileSchema } from '@/schemas/index'
 import { Role } from '@/enums/role'
 import { startTransition } from 'react'

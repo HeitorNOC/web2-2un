@@ -1,4 +1,3 @@
-// pages/payment/[planType].tsx
 "use client"
 
 import { useRouter } from 'next/navigation'

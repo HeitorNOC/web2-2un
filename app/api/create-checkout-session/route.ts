@@ -1,5 +1,3 @@
-// app/api/create-checkout-session/route.ts
-
 "use server"
 
 import { PlanType } from '@/enums/plan'
@@ -30,7 +28,7 @@ export async function POST(req: NextRequest) {
             currency: 'brl',
             product_data: {
               name: planType === PlanType.NORMAL ? 'Plano Normal' : 'Plano VIP',
-              images: ['https://drive.google.com/uc?id=1vssmk1m87iJCS-gzxKErDNneaqefThh-'], // URL da imagem
+              images: ['https://drive.google.com/uc?id=1vssmk1m87iJCS-gzxKErDNneaqefThh-'], 
             },
             unit_amount: amount,
           },
@@ -41,8 +39,8 @@ export async function POST(req: NextRequest) {
       success_url: `${req.headers.get('origin')}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get('origin')}/cancel`,
       metadata: {
-        userId, // Inclui o userId na metadata da sessão
-        planType, // Inclui o tipo do plano na metadata
+        userId, 
+        planType, 
       },
     })
 

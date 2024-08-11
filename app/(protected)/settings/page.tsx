@@ -46,8 +46,6 @@ export default function SettingsPage() {
 
   const [isPending, startTransition] = useTransition()
 
-  //const isClient = useIsClient()
-
   const form = useForm<z.infer<typeof SettingsSchema>>({
     resolver: zodResolver(SettingsSchema),
     defaultValues: {
@@ -82,8 +80,6 @@ export default function SettingsPage() {
       setSuccess("")
     }
   }
-
-  //if (!isClient) return <Spinner />
 
   return (
     <Card className="w-auto shadow-sm">

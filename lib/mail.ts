@@ -7,7 +7,7 @@ const domain = process.env.NEXT_PUBLIC_APP_URL
 export const sendTwoFactorTokenEmail = async (email: any, token: any) => {
   const msg = {
     to: email,
-    from: 'Acme <hnoc@discente.ifpe.edu.br>', // Ajuste o e-mail para um verificado no SendGrid
+    from: 'Acme <hnoc@discente.ifpe.edu.br>',
     subject: '2FA Code',
     html: `<p>Your 2FA code: ${token}</p>`,
   }
@@ -24,7 +24,7 @@ export const sendPasswordResetEmail = async (email: any, token:any) => {
   const resetLink = `${domain}/auth/new-password?token=${token}`
   const msg = {
     to: email,
-    from: 'Acme <hnoc@discente.ifpe.edu.br>', // Ajuste o e-mail para um verificado no SendGrid
+    from: 'Acme <hnoc@discente.ifpe.edu.br>', 
     subject: 'Reset your password',
     html: `<html>
         <body>
@@ -46,7 +46,7 @@ export const sendVerificationEmail = async (email: any, token: any) => {
   const confirmLink = `${domain}/auth/new-verification?token=${token}`
   const msg = {
     to: email,
-    from: 'Acme <hnoc@discente.ifpe.edu.br>', // Ajuste o e-mail para um verificado no SendGrid
+    from: 'Acme <hnoc@discente.ifpe.edu.br>', 
     subject: 'Verify your email',
     html: `<html>
         <body>

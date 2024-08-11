@@ -1,4 +1,3 @@
-// pages/cancel.tsx
 "use client"
 
 import { useEffect, useState } from 'react'
@@ -13,7 +12,6 @@ const CancelPage = () => {
 
   useEffect(() => {
     if (session_id) {
-      // A lógica para tratar um cancelamento pode ser implementada aqui
       setLoading(false)
     } else {
       setError('Sessão não encontrada. Cancelamento não pôde ser verificado.')

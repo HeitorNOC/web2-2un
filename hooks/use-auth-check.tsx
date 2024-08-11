@@ -1,5 +1,7 @@
+"use client"
+
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import axiosInstance from "@/lib/axios"
 
@@ -8,7 +10,7 @@ const useAuthCheck = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (status === "loading") return // Espera a sessão ser carregada
+    if (status === "loading") return 
     console.log(`status, `, status)
     const checkAccess = async () => {
       if (session) {
@@ -26,10 +28,10 @@ const useAuthCheck = () => {
           }
         } catch (error:any) {
           console.error('Error fetching user verification:', error.response?.data || error.message)
-          router.push("/error") // Redireciona para uma página de erro se necessário
+          router.push("/error") 
         }
       } else {
-        router.push("/auth/login") // Redireciona para a página de login se não houver sessão
+        router.push("/auth/login") 
       }
     }
 

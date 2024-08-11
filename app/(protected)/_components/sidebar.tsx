@@ -2,10 +2,10 @@
 
 import React from 'react'
 import Link from "next/link"
-import { links, RoleLinks, Link as LinkType, ROLES } from "@/app/(protected)/_constants" // Ajuste o caminho conforme necessário
+import { links, RoleLinks, Link as LinkType, ROLES } from "@/app/(protected)/_constants" 
 import { useCurrentRole } from "@/hooks/use-current-role"
-import { FaUser, FaCalendar, FaCog, FaCut, FaCashRegister, FaShoppingCart, FaClipboardList, FaChartLine, FaBox, FaChalkboardTeacher, FaBookOpen } from 'react-icons/fa'
-import { ScrollArea } from "@/components/ui/scroll-area" // Importe o componente de scroll do shadcn UI
+import { FaUser, FaCog } from 'react-icons/fa'
+import { ScrollArea } from "@/components/ui/scroll-area"
 import "./style.css"
 import UserButton from '@/components/auth/user-button'
 

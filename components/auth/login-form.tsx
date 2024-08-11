@@ -41,8 +41,6 @@ const LoginForm = () => {
 
   const [isPending, startTransition] = useTransition()
 
-  //const isClient = useIsClient()
-
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -79,8 +77,6 @@ const LoginForm = () => {
       }
     })
   }
-
-  //if (!isClient) return <Spinner />
 
   return (
     <CardWrapper
