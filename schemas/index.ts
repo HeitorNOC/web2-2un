@@ -1,3 +1,4 @@
+import { Role } from "@/enums/role";
 import { convertTimeStringToMinutes } from "@/utils/convert-time-string-to-minutes";
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import * as z from "zod";
@@ -127,4 +128,22 @@ export const RegisterSchema = z
   
   export const adminProfileSchema = z.object({
     cpf: z.string().min(11, "CPF deve ter no mínimo 11 caracteres").max(14, "CPF deve ter no máximo 14 caracteres"),
+  });
+
+
+  export const userUpdateSchema = z.object({
+    name: z.string().min(1, "Nome é obrigatório"),
+    email: z.string().email("Email inválido"),
+    role: z.nativeEnum(Role, { errorMap: () => ({ message: "Role inválido" }) }),
+    phone: z
+      .string()
+      .regex(/^\+?[1-9]\d{1,14}$/, "Número de telefone inválido")
+      .optional(),
+    gender: z.enum(["male", "female", "other"]).optional(),
+    birthDate: z
+      .string()
+      .refine((date) => !isNaN(Date.parse(date)), {
+        message: "Data de nascimento inválida",
+      })
+      .optional(),
   });
