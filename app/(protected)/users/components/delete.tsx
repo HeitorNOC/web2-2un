@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 
 interface DeleteUserModalProps {
   isOpen: boolean
-  user: { id: string name: string } | null
+  user: { id: string; name: string } | null
   onConfirm: () => void
   onCancel: () => void
 }
