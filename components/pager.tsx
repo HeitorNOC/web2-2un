@@ -85,32 +85,16 @@ function Pager({ itemsCount, handleChangePage, validatePage, interval = 10, filt
   }
 
   function ShowPage(page: any) {
-    switch (page) {
-      case '<<':
-        return (
-          <button className="page-link" onClick={() => SelectedPage(page)}>
-            <FaArrowLeft />
-          </button>
-        );
-      case '>>':
-        return (
-          <button className="page-link" onClick={() => SelectedPage(page)}>
-            <FaArrowRight />
-          </button>
-        );
-      case currentPage.current + 1:
-        return (
-          <button style={{ backgroundColor: '#c0ccf3' }} className="rounded-circle page-link text-dark" onClick={() => SelectedPage(page)}>
-            {page}
-          </button>
-        );
-      default:
-        return (
-          <button className="page-link" onClick={() => SelectedPage(page)}>
-            {page}
-          </button>
-        );
-    }
+    const isCurrentPage = page === currentPage.current + 1;
+    return (
+      <button
+      className={`page-link rounded-full px-3 py-2 
+        ${isCurrentPage ? 'bg-indigo-600 text-white' : 'bg-gray-700 text-gray-300'}
+        hover:bg-indigo-500 hover:text-white transition-colors duration-300`}
+        onClick={() => SelectedPage(page)}>
+        {page === '<<' ? <FaArrowLeft /> : page === '>>' ? <FaArrowRight /> : page}
+      </button>
+    );
   }
 
   const pagesCount = Math.ceil(itemsCount / interval);
@@ -122,18 +106,18 @@ function Pager({ itemsCount, handleChangePage, validatePage, interval = 10, filt
 
   return (
     <>
-      {pages.length > 1 && (
-        <nav aria-label="Pagination">
-          <ul className="pagination justify-content-center mb-0">
-            {pages.map((page) => (
-              <li className="page-item" key={`page${page}`}>
-                {ShowPage(page)}
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
-    </>
+    {pages.length > 1 && (
+      <nav aria-label="Pagination">
+        <ul className="flex justify-center items-center space-x-2 mb-0">
+          {pages.map((page) => (
+            <li className="page-item" key={`page${page}`}>
+              {ShowPage(page)}
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+  </>
   );
 }
 

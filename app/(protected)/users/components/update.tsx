@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { userUpdateSchema } from "@/schemas"
+import { Select } from "@/components/ui/selectUI"
+
 
 interface UpdateUserModalProps {
   isOpen: boolean
@@ -61,21 +63,22 @@ const UpdateUserModal: FC<UpdateUserModalProps> = ({ isOpen, user, onConfirm, on
               {errors.email && <p className="text-red-600 text-sm">{errors.email.message}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium">Role</label>
-              <select
+              <label className="block text-sm font-medium text-white">Role</label>
+              <Select
                 {...register("role")}
-                className={`mt-1 block w-full ${errors.role ? "border-red-500" : "border-gray-300"}`}
-              >
-                <option value="STUDENT">Usuário</option>
-                <option value="INSTRUCTOR">Professor</option>
-              </select>
+                className={`mt-1 block w-full ${errors.role ? "border-red-500" : "border-gray-300"}`}>
+                <option className="bg-black text-white" value="STUDENT">Usuário</option>
+                <option className="bg-black text-white" value="INSTRUCTOR">Professor</option>
+              </Select>
               {errors.role && <p className="text-red-600 text-sm">{errors.role.message}</p>}
             </div>
           </div>
+          <div className="mt-4">
           <DialogFooter>
             <Button type="submit">Atualizar</Button>
             <Button variant="outline" onClick={onCancel}>Cancelar</Button>
           </DialogFooter>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

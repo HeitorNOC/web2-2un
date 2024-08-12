@@ -9,6 +9,8 @@ import DeleteUserModal from "./components/delete";
 import UpdateUserModal from "./components/update";
 import { fetchUsersAction, deleteUserAction, updateUserAction } from "@/actions/user-management";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation"
 
 const UserManagementPage = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -19,13 +21,19 @@ const UserManagementPage = () => {
   const [userToDelete, setUserToDelete] = useState<any>(null);
   const [userToEdit, setUserToEdit] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter()
   const actualUser = useCurrentUser();
   const MAX_DATA_PAGE = 10;
 
   useEffect(() => {
-    startTransition(() => {
-      fetchUsers();
-    });
+        if(actualUser.role === Role.STUDENT){
+            router.push('/unauthorized')
+        }else {
+            startTransition(() => {
+            fetchUsers();
+            });
+        }
+  
   }, [page, selectedRole]);
 
   const fetchUsers = async () => {

@@ -86,7 +86,7 @@ export default function SettingsPage() {
       <CardHeader className="flex-row items-center justify-center font-semibold gap-x-3">
         <RiUserSettingsLine className="text-sky-400 text-3xl" />
 
-        <p className="text-2xl">Settings Page Example</p>
+        <p className="text-2xl">Configurações da conta</p>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -214,7 +214,7 @@ export default function SettingsPage() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value={"ADMIN"}>Admin</SelectItem>
+                        <SelectItem value={"ADMIN"}>ADMIN</SelectItem>
                         <SelectItem value={"STUDENT"}>STUDENT</SelectItem>
                         <SelectItem value={"INSTRUCTOR"}>INSTRUCTOR</SelectItem>
                       </SelectContent>

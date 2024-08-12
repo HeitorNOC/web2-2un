@@ -147,3 +147,26 @@ export const RegisterSchema = z
       })
       .optional(),
   })
+
+export const createMachineSchema = z.object({
+  name: z.string().min(1, "Nome é obrigatório"),
+  serialNumber: z.string().min(1, "Número de série é obrigatório"),
+  acquisitionDate: z
+    .string()
+    .refine((date) => !isNaN(Date.parse(date)) && new Date(date) <= new Date(), {
+      message: "Data de aquisição inválida ou no futuro",
+    }),
+  status: z.string().min(1, "Status é obrigatório"),
+});
+
+export const updateMachineSchema = z.object({
+  name: z.string().min(1, "Nome é obrigatório").optional(),
+  serialNumber: z.string().min(1, "Número de série é obrigatório").optional(),
+  acquisitionDate: z
+    .string()
+    .refine((date) => !isNaN(Date.parse(date)) && new Date(date) <= new Date(), {
+      message: "Data de aquisição inválida ou no futuro",
+    })
+    .optional(),
+  status: z.string().min(1, "Status é obrigatório").optional(),
+});

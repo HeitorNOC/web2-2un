@@ -4,7 +4,7 @@ import React from 'react'
 import Link from "next/link"
 import { links, RoleLinks, Link as LinkType, ROLES } from "@/app/(protected)/_constants" 
 import { useCurrentRole } from "@/hooks/use-current-role"
-import { FaUser, FaCog } from 'react-icons/fa'
+import { FaUser, FaCog, FaIndustry } from 'react-icons/fa'
 import { ScrollArea } from "@/components/ui/scroll-area"
 import "./style.css"
 import UserButton from '@/components/auth/user-button'
@@ -18,6 +18,7 @@ const Sidebar = () => {
     "Perfil": <FaUser />,
     "Settings": <FaCog />,
     "Admin": <FaUser />,
+    "Machines": <FaIndustry/>
   }
 
   return (

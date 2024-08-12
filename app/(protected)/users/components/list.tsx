@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Button } from "@/components/ui/button";
 import { User } from "@/types/next-auth";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 interface UserListProps {
   users: User[];
@@ -30,12 +31,12 @@ const UserList: FC<UserListProps> = ({ users, onEdit, onDelete }) => {
               <td className="px-4 py-3">{user.role}</td>
               <td className="px-4 py-3 text-center">
                 <div className="flex gap-2 justify-center">
-                  <Button variant="outline" onClick={() => onEdit(user)}>
-                    Editar
-                  </Button>
-                  <Button variant="destructive" onClick={() => onDelete(user)}>
-                    Excluir
-                  </Button>
+                <Button title="Editar" variant="outline" onClick={() => onEdit(user)}>
+                  <FaEdit/>
+                </Button>
+                <Button title="Excluir" variant="destructive" onClick={() => onDelete(user)}>
+                  <FaTrashAlt/>
+                </Button>
                 </div>
               </td>
             </tr>
