@@ -10,16 +10,22 @@ interface FetchMachinesActionProps {
 export async function fetchMachinesAction({
     page,
     limit,
-}: FetchMachinesActionProps) {
+    status, 
+}: FetchMachinesActionProps & { status?: string | null }) {
     const currentPage = Math.max(0, page)
     const skip = currentPage * limit
+
+    const whereClause = status ? { status } : {}
 
     const [machines, total] = await Promise.all([
         db.machine.findMany({
             skip,
             take: limit,
+            where: whereClause, 
         }),
-        db.machine.count(),
+        db.machine.count({
+            where: whereClause,
+        }),
     ])
 
     return {

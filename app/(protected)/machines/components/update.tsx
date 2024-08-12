@@ -23,14 +23,20 @@ const UpdateMachineModal: FC<UpdateMachineModalProps> = ({ isOpen, machine, onCo
     defaultValues: {
       name: machine.name,
       serialNumber: machine.serialNumber,
-      acquisitionDate: new Date(machine.acquisitionDate).toISOString(),
+      acquisitionDate: machine.acquisitionDate ? new Date(machine.acquisitionDate).toISOString().split('T')[0] : '',
       status: machine.status,
     },
   })
 
   const onSubmit: SubmitHandler<UpdateMachineFormData> = (data) => {
+    if (data.acquisitionDate) {
+      const adjustedDate = new Date(data.acquisitionDate)
+      adjustedDate.setHours(adjustedDate.getHours() + 12)
+      data.acquisitionDate = adjustedDate.toISOString()
+    }    
     onConfirm(data)
   }
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onCancel}>
@@ -63,6 +69,7 @@ const UpdateMachineModal: FC<UpdateMachineModalProps> = ({ isOpen, machine, onCo
               <label className="block text-sm font-medium">Data de Aquisição</label>
               <Input
                 type="date"
+                max={new Date().toISOString().split('T')[0]}
                 {...register("acquisitionDate")}
                 className={`mt-1 block w-full ${errors.acquisitionDate ? "border-red-500" : "border-gray-300"}`}
               />

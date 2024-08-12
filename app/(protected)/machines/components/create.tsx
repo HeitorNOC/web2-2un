@@ -19,12 +19,14 @@ type CreateMachineFormData = z.infer<typeof createMachineSchema>;
 const CreateMachineModal: FC<CreateMachineModalProps> = ({ isOpen, onConfirm, onCancel }) => {
   const { register, handleSubmit, formState: { errors } } = useForm<CreateMachineFormData>({
     resolver: zodResolver(createMachineSchema),
-  });
+  })
 
   const onSubmit: SubmitHandler<CreateMachineFormData> = (data) => {
+    const acquisitionDate = new Date(data.acquisitionDate);
+    acquisitionDate.setHours(acquisitionDate.getHours() + 12)
     const formattedData = {
       ...data,
-      acquisitionDate: new Date(data.acquisitionDate).toISOString(),
+      acquisitionDate: acquisitionDate.toISOString()
     }
     onConfirm(formattedData)
   }

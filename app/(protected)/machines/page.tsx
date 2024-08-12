@@ -18,6 +18,7 @@ const MachineManagementPage = () => {
   const [totalMachines, setTotalMachines] = useState(0)
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(0)
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
   const [machineToDelete, setMachineToDelete] = useState<any>(null)
   const [machineToEdit, setMachineToEdit] = useState<any>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -34,7 +35,7 @@ const MachineManagementPage = () => {
         fetchMachines()
       })
     }
-  }, [page])
+  }, [page, selectedStatus])
 
   const fetchMachines = async () => {
     setLoading(true)
@@ -42,6 +43,7 @@ const MachineManagementPage = () => {
       const { machines, total } = await fetchMachinesAction({
         page,
         limit: MAX_DATA_PAGE,
+        status: selectedStatus, 
       })
       setMachines(machines)
       setTotalMachines(total)
@@ -123,7 +125,19 @@ const MachineManagementPage = () => {
       <section>
         <div className="flex justify-between items-center mb-6">
           <h4 className="text-lg font-semibold">Gerenciamento de Máquinas</h4>
-          <Button onClick={() => setIsCreateModalOpen(true)}>Cadastrar Máquina</Button>
+          <div className="flex items-center">
+            <select
+              className="bg-slate-900 text-white rounded-md p-2 mr-4"
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              value={selectedStatus || ""}
+            >
+              <option value="">Todos</option>
+              <option value="WORKING">Em Funcionamento</option>
+              <option value="MAINTENANCE">Em Manutenção</option>
+              <option value="OUT_OF_SERVICE">Fora de Serviço</option>
+            </select>
+            <Button onClick={() => setIsCreateModalOpen(true)}>Cadastrar Máquina</Button>
+          </div>
         </div>
 
         <div className="mt-4">
