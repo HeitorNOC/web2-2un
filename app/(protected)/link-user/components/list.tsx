@@ -1,13 +1,11 @@
 import { FC } from "react";
 import { Button } from "@/components/ui/button";
-import { User } from "@/types/next-auth";
 import { FaLink , FaUnlink } from "react-icons/fa";
-import { UserWithRelations } from "./unlink";
 
 interface UserListProps {
-  users: UserWithRelations[];
-  onLink: (user: UserWithRelations) => void;
-  onUnlink: (user: UserWithRelations) => void;
+  users: any[];
+  onLink: (user: any) => void;
+  onUnlink: (user: any) => void;
 }
 
 const UserList: FC<UserListProps> = ({ users, onLink, onUnlink }) => {

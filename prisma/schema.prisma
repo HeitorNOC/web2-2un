@@ -8,21 +8,21 @@ datasource db {
 }
 
 model User {
-  id                          String                      @id @default(cuid())
+  id                          String                       @id @default(cuid())
   name                        String?
-  email                       String?                     @unique
-  cpf                         String?                     @unique
+  email                       String?                      @unique
+  cpf                         String?                      @unique
   emailVerified               DateTime?
   image                       String?
   password                    String?
-  role                        String                      @default("STUDENT")
-  isActive                    Boolean                     @default(false)
+  role                        String                       @default("STUDENT")
+  isActive                    Boolean                      @default(false)
   accounts                    Account[]
-  isTwoFactorEnabled          Boolean                     @default(false)
+  isTwoFactorEnabled          Boolean                      @default(false)
   twoFactorConfirmation       TwoFactorConfirmation?
   AdministratorAdditionalData AdministratorAdditionalData?
-  StudentAdditionalData       StudentAdditionalData?
-  InstructorAdditionalData    InstructorAdditionalData?
+  StudentAdditionalData       StudentAdditionalData?       @relation("StudentUser")
+  InstructorAdditionalData    InstructorAdditionalData?    @relation("InstructorUser")
   StudentEvolution            StudentEvolution[]
   Payment                     Payment[]
   PaymentHistory              PaymentHistory[]
@@ -99,7 +99,9 @@ model AdministratorAdditionalData {
 model StudentAdditionalData {
   id                   String                    @id @default(uuid())
   userId               String                    @unique
-  user                 User                      @relation(fields: [userId], references: [id])
+  user                 User                      @relation(fields: [userId], references: [id], name: "StudentUser")
+  assignedInstructorId String?
+  assignedInstructor   InstructorAdditionalData? @relation(fields: [assignedInstructorId], references: [id], name: "AssignedInstructor")
   name                 String?
   gender               String?
   phone                String?
@@ -108,8 +110,6 @@ model StudentAdditionalData {
   weight               Float?
   bf                   Float?
   comorbidity          String?
-  assignedInstructorId String?
-  assignedInstructor   InstructorAdditionalData? @relation(fields: [assignedInstructorId], references: [id])
   status               String?
   paymentDate          DateTime?                 @default(now())
   planType             Int
@@ -120,15 +120,15 @@ model StudentAdditionalData {
 }
 
 model InstructorAdditionalData {
-  id                    String                  @id @default(uuid())
-  userId                String                  @unique
-  user                  User                    @relation(fields: [userId], references: [id])
-  name                  String?
-  phone                 String?
-  cref                  String?                 @unique
-  createdAt             DateTime                @default(now())
-  updatedAt             DateTime                @updatedAt
-  StudentAdditionalData StudentAdditionalData[]
+  id        String                  @id @default(uuid())
+  userId    String                  @unique
+  user      User                    @relation(fields: [userId], references: [id], name: "InstructorUser")
+  name      String?
+  phone     String?
+  cref      String?                 @unique
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
+  students  StudentAdditionalData[] @relation("AssignedInstructor")
 
   @@index([id])
 }

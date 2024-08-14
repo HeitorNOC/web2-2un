@@ -14,16 +14,8 @@ import { associateInstructorAction } from "@/actions/associateInstructorAction";
 import { fetchUsersAction } from "@/actions/user-management";
 import { fetchInstructorsAction } from "@/actions/instructor-management";
 
-import { User, StudentAdditionalData, InstructorAdditionalData, AdministratorAdditionalData } from "@prisma/client";
-
-export interface UserWithRelations extends User {
-  StudentAdditionalData?: StudentAdditionalData[];
-  InstructorAdditionalData?: InstructorAdditionalData[];
-  AdministratorAdditionalData?: AdministratorAdditionalData[];
-}
-
 const UserManagementPage = () => {
-  const [users, setUsers] = useState<UserWithRelations[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [instructors, setInstructors] = useState<any[]>([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -66,6 +58,7 @@ const UserManagementPage = () => {
         limit: MAX_DATA_PAGE,
         actualUserId: actualUser.id,
       });
+      console.log(`users: `, users)
       setUsers(users);
       setTotalUsers(total);
     } catch (error) {
@@ -94,12 +87,12 @@ const UserManagementPage = () => {
     });
   };
 
-  const handleAssignInstructor = (instructorId: string) => {
+  const handleAssignInstructor = (data: any) => {
     if (!userToAssign) return;
 
     startTransition(() => {
       setLoading(true);
-      associateInstructorAction({ studentId: userToAssign.id, instructorId })
+      associateInstructorAction({ studentId: data.studentId, instructorId: data.instructorId })
         .then(() => {
           setUserToAssign(null);
           setIsModalOpen(false);

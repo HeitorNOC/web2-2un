@@ -7,6 +7,8 @@ interface AssociateInstructorActionProps {
 }
 
 export async function associateInstructorAction({ studentId, instructorId }: AssociateInstructorActionProps) {
+  console.log('studentId: ', studentId)
+  console.log('instructorId: ', instructorId)
   try {
     const studentData = await db.user.findUnique({
       where: { id: studentId },
@@ -15,14 +17,33 @@ export async function associateInstructorAction({ studentId, instructorId }: Ass
       }
     })
 
-    if (!studentData?.StudentAdditionalData) {
-      return { success: false, error: "Aluno não encontrado" }
+    if (!studentData || !studentData.StudentAdditionalData) {
+      return { success: false, error: "Aluno não encontrado ou inválido" }
     }
+    let updatedStudentData
 
-    const updatedStudentData = await db.studentAdditionalData.update({
-      where: { id: studentData.id },
-      data: { assignedInstructorId: instructorId }
-    })
+    if (instructorId) {
+      const instructorData = await db.user.findUnique({
+        where: { id: instructorId },
+        include: {
+          InstructorAdditionalData: true
+        }
+      })
+
+      if (!instructorData || !instructorData.InstructorAdditionalData) {
+        return { success: false, error: "Instrutor não encontrado ou inválido" }
+      }
+
+      updatedStudentData = await db.studentAdditionalData.update({
+        where: { id: studentData.StudentAdditionalData.id },
+        data: { assignedInstructorId: instructorData.InstructorAdditionalData.id }
+      })
+    } else {
+      updatedStudentData = await db.studentAdditionalData.update({
+        where: { id: studentData.StudentAdditionalData.id },
+        data: { assignedInstructorId: null }
+      })
+    }
 
     return { success: true, studentData: updatedStudentData }
   } catch (error) {

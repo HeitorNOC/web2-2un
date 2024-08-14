@@ -11,19 +11,13 @@ interface FetchUsersActionProps {
     actualUserId: string
 }
 
-export interface UserWithRelations extends User {
-  StudentAdditionalData?: StudentAdditionalData[];
-  InstructorAdditionalData?: InstructorAdditionalData[];
-  AdministratorAdditionalData?: AdministratorAdditionalData[];
-}
-
 
 export async function fetchUsersAction({
     role,
     page,
     limit,
     actualUserId
-}: FetchUsersActionProps): Promise<{ users: UserWithRelations[]; total: number }>  {
+}: FetchUsersActionProps): Promise<{ users: any; total: number }>  {
     const currentPage = Math.max(0, page)
     const skip = currentPage * limit
     const whereClause = role ? { role, id: { not: actualUserId } } : { id: { not: actualUserId } }
