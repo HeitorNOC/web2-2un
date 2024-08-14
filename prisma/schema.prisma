@@ -8,21 +8,21 @@ datasource db {
 }
 
 model User {
-  id                          String                        @id @default(cuid())
+  id                          String                      @id @default(cuid())
   name                        String?
-  email                       String?                       @unique
-  cpf                         String?                       @unique
+  email                       String?                     @unique
+  cpf                         String?                     @unique
   emailVerified               DateTime?
   image                       String?
   password                    String?
-  role                        String                        @default("STUDENT")
-  isActive                    Boolean                       @default(false)
+  role                        String                      @default("STUDENT")
+  isActive                    Boolean                     @default(false)
   accounts                    Account[]
-  isTwoFactorEnabled          Boolean                       @default(false)
+  isTwoFactorEnabled          Boolean                     @default(false)
   twoFactorConfirmation       TwoFactorConfirmation?
-  AdministratorAdditionalData AdministratorAdditionalData[]
-  StudentAdditionalData       StudentAdditionalData[]
-  InstructorAdditionalData    InstructorAdditionalData[]
+  AdministratorAdditionalData AdministratorAdditionalData?
+  StudentAdditionalData       StudentAdditionalData?
+  InstructorAdditionalData    InstructorAdditionalData?
   StudentEvolution            StudentEvolution[]
   Payment                     Payment[]
   PaymentHistory              PaymentHistory[]
@@ -88,7 +88,7 @@ model TwoFactorConfirmation {
 model AdministratorAdditionalData {
   id        String   @id @default(uuid())
   name      String?
-  userId    String
+  userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -98,7 +98,7 @@ model AdministratorAdditionalData {
 
 model StudentAdditionalData {
   id                   String                    @id @default(uuid())
-  userId               String
+  userId               String                    @unique
   user                 User                      @relation(fields: [userId], references: [id])
   name                 String?
   gender               String?
@@ -121,7 +121,7 @@ model StudentAdditionalData {
 
 model InstructorAdditionalData {
   id                    String                  @id @default(uuid())
-  userId                String
+  userId                String                  @unique
   user                  User                    @relation(fields: [userId], references: [id])
   name                  String?
   phone                 String?

@@ -170,3 +170,7 @@ export const updateMachineSchema = z.object({
     .optional(),
   status: z.string().min(1, "Status é obrigatório").optional(),
 });
+
+export const associateInstructorSchema = z.object({
+  instructorId: z.string().nonempty("O campo Professor é obrigatório")
+})

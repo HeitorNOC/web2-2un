@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db"
 import { Role } from "@/enums/role"
+import { User, StudentAdditionalData, InstructorAdditionalData, AdministratorAdditionalData } from "@prisma/client";
 
 interface FetchUsersActionProps {
     role?: Role | null
@@ -10,12 +11,19 @@ interface FetchUsersActionProps {
     actualUserId: string
 }
 
+export interface UserWithRelations extends User {
+  StudentAdditionalData?: StudentAdditionalData[];
+  InstructorAdditionalData?: InstructorAdditionalData[];
+  AdministratorAdditionalData?: AdministratorAdditionalData[];
+}
+
+
 export async function fetchUsersAction({
     role,
     page,
     limit,
     actualUserId
-}: FetchUsersActionProps) {
+}: FetchUsersActionProps): Promise<{ users: UserWithRelations[]; total: number }>  {
     const currentPage = Math.max(0, page)
     const skip = currentPage * limit
     const whereClause = role ? { role, id: { not: actualUserId } } : { id: { not: actualUserId } }

@@ -6,7 +6,7 @@
 
 */
 -- RedefineTables
-PRAGMA foreign_keys=OFF
+PRAGMA foreign_keys=OFF;
 CREATE TABLE "new_StudentAdditionalData" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
@@ -26,11 +26,11 @@ CREATE TABLE "new_StudentAdditionalData" (
     "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "StudentAdditionalData_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "StudentAdditionalData_assignedInstructorId_fkey" FOREIGN KEY ("assignedInstructorId") REFERENCES "InstructorAdditionalData" ("id") ON DELETE SET NULL ON UPDATE CASCADE
-)
-INSERT INTO "new_StudentAdditionalData" ("assignedInstructorId", "bf", "birthDate", "comorbidity", "createdAt", "gender", "height", "id", "name", "paymentDate", "phone", "planType", "status", "updatedAt", "userId", "weight") SELECT "assignedInstructorId", "bf", "birthDate", "comorbidity", "createdAt", "gender", "height", "id", "name", "paymentDate", "phone", "planType", "status", "updatedAt", "userId", "weight" FROM "StudentAdditionalData"
-DROP TABLE "StudentAdditionalData"
-ALTER TABLE "new_StudentAdditionalData" RENAME TO "StudentAdditionalData"
-CREATE INDEX "StudentAdditionalData_id_idx" ON "StudentAdditionalData"("id")
+);
+INSERT INTO "new_StudentAdditionalData" ("assignedInstructorId", "bf", "birthDate", "comorbidity", "createdAt", "gender", "height", "id", "name", "paymentDate", "phone", "planType", "status", "updatedAt", "userId", "weight") SELECT "assignedInstructorId", "bf", "birthDate", "comorbidity", "createdAt", "gender", "height", "id", "name", "paymentDate", "phone", "planType", "status", "updatedAt", "userId", "weight" FROM "StudentAdditionalData";
+DROP TABLE "StudentAdditionalData";
+ALTER TABLE "new_StudentAdditionalData" RENAME TO "StudentAdditionalData";
+CREATE INDEX "StudentAdditionalData_id_idx" ON "StudentAdditionalData"("id");
 CREATE TABLE "new_InstructorAdditionalData" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
@@ -40,11 +40,11 @@ CREATE TABLE "new_InstructorAdditionalData" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "InstructorAdditionalData_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-)
-INSERT INTO "new_InstructorAdditionalData" ("createdAt", "cref", "id", "name", "phone", "updatedAt", "userId") SELECT "createdAt", "cref", "id", "name", "phone", "updatedAt", "userId" FROM "InstructorAdditionalData"
-DROP TABLE "InstructorAdditionalData"
-ALTER TABLE "new_InstructorAdditionalData" RENAME TO "InstructorAdditionalData"
-CREATE UNIQUE INDEX "InstructorAdditionalData_cref_key" ON "InstructorAdditionalData"("cref")
-CREATE INDEX "InstructorAdditionalData_id_idx" ON "InstructorAdditionalData"("id")
-PRAGMA foreign_key_check
-PRAGMA foreign_keys=ON
+);
+INSERT INTO "new_InstructorAdditionalData" ("createdAt", "cref", "id", "name", "phone", "updatedAt", "userId") SELECT "createdAt", "cref", "id", "name", "phone", "updatedAt", "userId" FROM "InstructorAdditionalData";
+DROP TABLE "InstructorAdditionalData";
+ALTER TABLE "new_InstructorAdditionalData" RENAME TO "InstructorAdditionalData";
+CREATE UNIQUE INDEX "InstructorAdditionalData_cref_key" ON "InstructorAdditionalData"("cref");
+CREATE INDEX "InstructorAdditionalData_id_idx" ON "InstructorAdditionalData"("id");
+PRAGMA foreign_key_check;
+PRAGMA foreign_keys=ON;
