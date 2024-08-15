@@ -21,6 +21,10 @@ export const ADMIN_LINKS = [
   {
     title: "Machines",
     path: "/machines"
+  },
+  {
+    title: "Instructors",
+    path: "/instructors"
   }
 ]
 

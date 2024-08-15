@@ -174,3 +174,29 @@ export const updateMachineSchema = z.object({
 export const associateInstructorSchema = z.object({
   instructorId: z.string().nonempty("O campo Professor é obrigatório")
 })
+
+export const updateInstructorSchema = z.object({
+  name: z.string().min(1, { message: "Nome é obrigatório." }).optional(),
+  email: z.string().email({ message: "Por favor, insira um email válido." }).optional(),
+  cpf: z.string()
+    .min(11, { message: "CPF deve ter pelo menos 11 caracteres." })
+    .max(11, { message: "CPF deve ter no máximo 11 caracteres." }).optional(),
+  phone: z.string().optional(),
+  cref: z.string()
+    .min(6, { message: "CREF é obrigatório." })
+    .max(6, { message: "CREF deve ter no máximo 6 caracteres." }).optional(),
+  image: z.string().url({ message: "Por favor, insira uma URL de imagem válida." }).optional(),
+})
+
+export const createInstructorSchema = z.object({
+  name: z.string().min(1, { message: "Nome é obrigatório." }),
+  email: z.string().email({ message: "Por favor, insira um email válido." }),
+  cpf: z.string()
+    .min(11, { message: "CPF deve ter pelo menos 11 caracteres." })
+    .max(14, { message: "CPF deve ter no máximo 14 caracteres." }),
+  phone: z.string().optional(),
+  cref: z.string()
+    .min(6, { message: "CREF é obrigatório." })
+    .max(6, { message: "CREF deve ter no máximo 6 caracteres." }),
+  image: z.string().url({ message: "Por favor, insira uma URL de imagem válida." }).optional(),
+})

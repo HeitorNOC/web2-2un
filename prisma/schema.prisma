@@ -122,8 +122,7 @@ model StudentAdditionalData {
 model InstructorAdditionalData {
   id        String                  @id @default(uuid())
   userId    String                  @unique
-  user      User                    @relation(fields: [userId], references: [id], name: "InstructorUser")
-  name      String?
+  user      User                    @relation(fields: [userId], references: [id], name: "InstructorUser", onDelete: Cascade)
   phone     String?
   cref      String?                 @unique
   createdAt DateTime                @default(now())
