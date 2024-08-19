@@ -7,8 +7,7 @@ interface AssociateInstructorActionProps {
 }
 
 export async function associateInstructorAction({ studentId, instructorId }: AssociateInstructorActionProps) {
-  console.log('studentId: ', studentId)
-  console.log('instructorId: ', instructorId)
+
   try {
     const studentData = await db.user.findUnique({
       where: { id: studentId },

@@ -25,7 +25,7 @@ interface InstructorListProps {
 }
 
 const InstructorList: FC<InstructorListProps> = ({ instructors, onEdit, onDelete }) => {
-    console.log(instructors)
+
   return instructors.length === 0 ? (
     <p className="text-center text-gray-500">Não há professores cadastrados.</p>
   ) : (

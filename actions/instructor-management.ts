@@ -126,7 +126,7 @@ export async function updateInstructor(
 
 export async function deleteInstructor(id: string) {
     try {
-        console.log(id)
+
         await db.user.delete({
             where: {
                 id: id,

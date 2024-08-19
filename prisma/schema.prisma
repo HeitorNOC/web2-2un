@@ -26,6 +26,7 @@ model User {
   StudentEvolution            StudentEvolution[]
   Payment                     Payment[]
   PaymentHistory              PaymentHistory[]
+  Trainings                   Training[]
 
   @@index([role])
 }
@@ -115,6 +116,7 @@ model StudentAdditionalData {
   planType             Int
   createdAt            DateTime                  @default(now())
   updatedAt            DateTime                  @updatedAt
+  Training             Training[]
 
   @@index([id])
 }
@@ -128,20 +130,62 @@ model InstructorAdditionalData {
   createdAt DateTime                @default(now())
   updatedAt DateTime                @updatedAt
   students  StudentAdditionalData[] @relation("AssignedInstructor")
+  Training  Training[]
 
   @@index([id])
 }
 
 model Machine {
-  id              String   @id @default(uuid())
+  id              String     @id @default(uuid())
   name            String
-  serialNumber    String   @unique
+  serialNumber    String     @unique
   acquisitionDate DateTime
   status          String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  image           String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  Exercise        Exercise[]
 
   @@index([id])
+}
+
+model Training {
+  id           String                   @id @default(cuid())
+  studentId    String
+  instructorId String
+  student      StudentAdditionalData    @relation(fields: [studentId], references: [id])
+  instructor   InstructorAdditionalData @relation(fields: [instructorId], references: [id])
+  blocks       TrainingBlock[]
+  createdAt    DateTime                 @default(now())
+  updatedAt    DateTime                 @updatedAt
+  User         User?                    @relation(fields: [userId], references: [id])
+  userId       String?
+}
+
+model TrainingBlock {
+  id         String     @id @default(cuid())
+  name       String
+  type       String
+  trainingId String
+  training   Training   @relation(fields: [trainingId], references: [id])
+  exercises  Exercise[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Exercise {
+  id              String        @id @default(cuid())
+  name            String
+  description     String?
+  machineId       String
+  machine         Machine       @relation(fields: [machineId], references: [id])
+  trainingBlockId String
+  trainingBlock   TrainingBlock @relation(fields: [trainingBlockId], references: [id])
+  series          Int?
+  repetitions     Int?
+  suggestedWeight Float?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }
 
 model StudentEvolution {
