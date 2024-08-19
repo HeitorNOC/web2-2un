@@ -88,7 +88,7 @@ export async function createTrainingAction({
 
 
 export async function updateTrainingAction(trainingId: string, data: { blocks: CreateTrainingProps["blocks"] }) {
-  const { blocks } = data
+  const { blocks } = data;
 
   try {
     const training = await db.training.update({
@@ -100,17 +100,26 @@ export async function updateTrainingAction(trainingId: string, data: { blocks: C
             name: block.name,
             type: block.type,
             exercises: {
-              create: block.exercises,
+              create: block.exercises.map((exercise) => ({
+                name: exercise.name,
+                description: exercise.description,
+                machine: {
+                  connect: { id: exercise.machineId }
+                },
+                series: parseInt(exercise.series, 10),
+                repetitions: parseInt(exercise.repetitions, 10),
+                suggestedWeight: parseFloat(exercise.suggestedWeight)
+              })),
             },
           })),
         },
       },
-    })
+    });
 
-    return { success: true, training }
+    return { success: true, training };
   } catch (error) {
-    console.error("Erro ao atualizar treino:", error)
-    return { success: false, error: "Erro ao atualizar treino." }
+    console.error("Erro ao atualizar treino:", error);
+    return { success: false, error: "Erro ao atualizar treino." };
   }
 }
 
@@ -176,7 +185,7 @@ export async function fetchAssociatedStudents(instructorId: string) {
       },
       include: {
         user: true,
-        Training: {
+        training: {
           include: {
             blocks: {
               include: {
@@ -227,3 +236,36 @@ export async function fetchMachinesAction({
   }
 }
 
+export async function deleteTrainingAction(id: string) {
+  if (!id) {
+    return { success: false, error: 'id do usuário vazio' }
+  }
+
+  try {
+      const getUserFromDB  = await db.studentAdditionalData.findFirst({
+        where: {
+          userId: id
+        },
+        include: {
+          training: true
+        }
+      })
+      console.log(`id: `, id)
+      console.log(`getUserFromDB: `, getUserFromDB)
+      if (!getUserFromDB) {
+        return { success: false, error: 'usuário invalido' }
+      }
+      await db.training.delete({
+        where: {
+          id: getUserFromDB.training?.id
+        },
+      });
+
+      console.log("Training deletado com sucesso!");
+      return { success: true }
+    } catch (error) {
+      console.error("Erro ao deletar o training:", error);
+      return { success: false, error: 'Erro ao deletar o training' }
+    }
+  
+}

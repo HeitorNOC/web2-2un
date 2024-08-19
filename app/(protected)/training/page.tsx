@@ -6,6 +6,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { useRouter } from "next/navigation";
 import {
   createTrainingAction,
+  deleteTrainingAction,
   fetchAssociatedStudents,
   fetchMachinesAction,
   fetchTrainingsForStudent,
@@ -16,6 +17,7 @@ import UserList from "./components/userLIst";
 import CreateTraining from "./components/createTraining";
 import UpdateTraining from "./components/updateTraining";
 import ViewTraining from "./components/viewTraining";
+import DeleteTrainingModal from "./components/deleteTraining";
 
 const StudentTrainingPage = () => {
   const [students, setStudents] = useState<any[]>([]);
@@ -23,8 +25,8 @@ const StudentTrainingPage = () => {
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const [isTrainingModalOpen, setIsTrainingModalOpen] = useState(false);
   const [machines, setMachines] = useState<any[]>([]);
-  const [trainings, setTrainings] = useState<any[]>([]);
-  const [modalType, setModalType] = useState<'create' | 'update' | 'view' | null>(null);
+  const [trainings, setTrainings] = useState<any>();
+  const [modalType, setModalType] = useState<'create' | 'update' | 'view' | 'delete' | null>(null);
   const router = useRouter();
   const actualUser = useCurrentUser();
 
@@ -70,7 +72,7 @@ const StudentTrainingPage = () => {
     setLoading(true);
     try {
       const { trainings } = await fetchTrainingsForStudent(studentId);
-      setTrainings(trainings || []);
+      setTrainings(trainings || {});
     } catch (error) {
       console.error("Erro ao buscar treinos:", error);
     } finally {
@@ -98,6 +100,13 @@ const StudentTrainingPage = () => {
     setIsTrainingModalOpen(true);
   };
 
+  const handleDeleteTraining = async (student: any) => {
+    setSelectedStudent(student);
+    await fetchStudentTrainings(student.id);
+    setModalType('delete');
+    setIsTrainingModalOpen(true);
+  };
+
   const handleTrainingSave = async (data: any) => {
     setLoading(true);
     const trainingData = {
@@ -122,6 +131,24 @@ const StudentTrainingPage = () => {
     }
   };
 
+  const handleDeleteTrainingAction = () => {
+    if (!selectedStudent) return;
+    console.log('selectedStudent: ',selectedStudent)
+    startTransition(() => {
+      setLoading(true);
+      deleteTrainingAction(selectedStudent.id)
+        .then(() => {
+          setSelectedStudent(null);
+        })
+        .catch((error: any) => {
+          console.error("Erro ao excluir usuário:", error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    });
+  };
+
   if (loading) {
     return <Spinner />;
   }
@@ -139,6 +166,7 @@ const StudentTrainingPage = () => {
             onCreateTraining={handleCreateTraining}
             onViewTraining={handleViewTraining}
             onEditTraining={handleEditTraining}
+            onDeleteTraining={handleDeleteTraining}
           />
         </div>
       </section>
@@ -172,6 +200,14 @@ const StudentTrainingPage = () => {
           trainings={trainings}
           machines={machines}
           onCancel={() => setIsTrainingModalOpen(false)}
+        />
+      )}
+      {isTrainingModalOpen && modalType === 'delete' && (
+        <DeleteTrainingModal
+          training={selectedStudent}
+          onConfirm={handleDeleteTrainingAction}
+          onCancel={() => setSelectedStudent(null)}
+          isOpen={!!selectedStudent}
         />
       )}
     </div>

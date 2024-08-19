@@ -10,7 +10,7 @@ import {
 
 const { auth } = NextAuth(authConfig)
 
-export default auth((req: any) => {
+export default auth((req: any): any => {
   const { nextUrl } = req
   const isAuthorized = !!req.auth
 

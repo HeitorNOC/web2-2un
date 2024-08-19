@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { Role } from "../../../../enums/role"
 
 export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
   try {
@@ -13,9 +14,12 @@ export async function GET(req: NextRequest, { params }: { params: { userId: stri
       where: { id: userId },
       include: {
         AdministratorAdditionalData: true,
-        StudentAdditionalData: true,
+        StudentAdditionalData: {
+          include: {
+            Payment: true
+          }
+        },
         InstructorAdditionalData: true,
-        Payment: true,
       },
     })
 
@@ -24,7 +28,7 @@ export async function GET(req: NextRequest, { params }: { params: { userId: stri
     }
 
     const isComplete =  user.AdministratorAdditionalData || user.StudentAdditionalData || user.InstructorAdditionalData
-    const hasActivePayment = user.Payment.some(payment => payment.status === 'completed' && new Date(payment.paymentDate).getMonth() === new Date().getMonth())
+    const hasActivePayment = user.role === Role.STUDENT && user.StudentAdditionalData && user.StudentAdditionalData.Payment.some(payment => payment.status === 'completed' && new Date(payment.paymentDate).getMonth() === new Date().getMonth())
     const hasAccess = user.role === 'STUDENT' || (user.role === 'INSTRUCTOR')
 
     return NextResponse.json({ isComplete, hasActivePayment: true, hasAccess }, { status: 200 })

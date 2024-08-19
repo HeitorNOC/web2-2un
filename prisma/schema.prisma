@@ -24,9 +24,6 @@ model User {
   StudentAdditionalData       StudentAdditionalData?       @relation("StudentUser")
   InstructorAdditionalData    InstructorAdditionalData?    @relation("InstructorUser")
   StudentEvolution            StudentEvolution[]
-  Payment                     Payment[]
-  PaymentHistory              PaymentHistory[]
-  Trainings                   Training[]
 
   @@index([role])
 }
@@ -116,7 +113,10 @@ model StudentAdditionalData {
   planType             Int
   createdAt            DateTime                  @default(now())
   updatedAt            DateTime                  @updatedAt
-  Training             Training[]
+  Payment              Payment[]
+  PaymentHistory       PaymentHistory[]
+  trainingId           String?                   @unique
+  training             Training?                 @relation(name: "StudentToTraining", fields: [trainingId], references: [id])
 
   @@index([id])
 }
@@ -151,15 +151,13 @@ model Machine {
 
 model Training {
   id           String                   @id @default(cuid())
-  studentId    String
+  studentId    String                   @unique
   instructorId String
-  student      StudentAdditionalData    @relation(fields: [studentId], references: [id])
+  student      StudentAdditionalData?   @relation(name: "StudentToTraining")
   instructor   InstructorAdditionalData @relation(fields: [instructorId], references: [id])
   blocks       TrainingBlock[]
   createdAt    DateTime                 @default(now())
-  updatedAt    DateTime                 @updatedAt
-  User         User?                    @relation(fields: [userId], references: [id])
-  userId       String?
+  updatedAt    DateTime                 @default(now())
 }
 
 model TrainingBlock {
@@ -167,7 +165,7 @@ model TrainingBlock {
   name       String
   type       String
   trainingId String
-  training   Training   @relation(fields: [trainingId], references: [id])
+  training   Training   @relation(fields: [trainingId], references: [id], onDelete: Cascade)
   exercises  Exercise[]
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
@@ -180,7 +178,7 @@ model Exercise {
   machineId       String
   machine         Machine       @relation(fields: [machineId], references: [id])
   trainingBlockId String
-  trainingBlock   TrainingBlock @relation(fields: [trainingBlockId], references: [id])
+  trainingBlock   TrainingBlock @relation(fields: [trainingBlockId], references: [id], onDelete: Cascade)
   series          Int?
   repetitions     Int?
   suggestedWeight Float?
@@ -200,28 +198,28 @@ model StudentEvolution {
 }
 
 model Payment {
-  id             String           @id @default(cuid())
-  userId         String
-  user           User             @relation(fields: [userId], references: [id])
-  amount         Float
-  method         String
-  paymentDate    DateTime         @default(now())
-  planType       Int
-  status         String
-  createdAt      DateTime         @default(now())
-  PaymentHistory PaymentHistory[]
+  id                      String                 @id @default(cuid())
+  amount                  Float
+  method                  String
+  paymentDate             DateTime               @default(now())
+  planType                Int
+  status                  String
+  createdAt               DateTime               @default(now())
+  PaymentHistory          PaymentHistory[]
+  StudentAdditionalData   StudentAdditionalData? @relation(fields: [studentAdditionalDataId], references: [id])
+  studentAdditionalDataId String?
 
-  @@index([userId])
+  @@index([studentAdditionalDataId])
 }
 
 model PaymentHistory {
-  id        String   @id @default(cuid())
-  paymentId String
-  payment   Payment  @relation(fields: [paymentId], references: [id])
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
+  id                      String                 @id @default(cuid())
+  paymentId               String
+  payment                 Payment                @relation(fields: [paymentId], references: [id])
+  createdAt               DateTime               @default(now())
+  StudentAdditionalData   StudentAdditionalData? @relation(fields: [studentAdditionalDataId], references: [id])
+  studentAdditionalDataId String?
 
   @@index([paymentId])
-  @@index([userId])
+  @@index([studentAdditionalDataId])
 }

@@ -5,9 +5,9 @@ import { Role } from "@/enums/role"
 import { AdministratorAdditionalData, InstructorAdditionalData, StudentAdditionalData, User } from "@prisma/client"
 
 export interface UserWithRelations extends User {
-  StudentAdditionalData?: StudentAdditionalData[];
-  InstructorAdditionalData?: InstructorAdditionalData[];
-  AdministratorAdditionalData?: AdministratorAdditionalData[];
+  StudentAdditionalData?: StudentAdditionalData;
+  InstructorAdditionalData?: InstructorAdditionalData;
+  AdministratorAdditionalData?: AdministratorAdditionalData;
 }
 
 interface UnlinkUserModalProps {
@@ -29,7 +29,7 @@ const UnlinkUserModal: FC<UnlinkUserModalProps> = ({ isOpen, user, actualUser, o
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="destructive" onClick={onConfirm} disabled={actualUser.role === Role.INSTRUCTOR && actualUser.id === user?.StudentAdditionalData}>
+          <Button variant="destructive" onClick={onConfirm} disabled={actualUser.role === Role.INSTRUCTOR && actualUser.id === user?.StudentAdditionalData?.userId}>
             Confirmar
           </Button>
           <Button variant="outline" onClick={onCancel}>

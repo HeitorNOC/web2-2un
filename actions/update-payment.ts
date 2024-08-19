@@ -2,6 +2,7 @@
 
 import { db } from '@/lib/db'
 import Stripe from 'stripe'
+import { getUserById } from "../data/user"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2024-06-20',
@@ -22,10 +23,15 @@ export const updatePaymentAction = async ({ sessionId }: UpdatePaymentActionProp
       if (!userId) {
         return { error: 'User ID not found in session metadata' }
       }
+      const userFromDB = await getUserById(userId)
+
+      if (!userId) {
+        return { error: 'User not valid' }
+      }
       
      const payment =  await db.payment.create({
         data: {
-          userId,
+          studentAdditionalDataId: userFromDB?.StudentAdditionalData?.id,
           amount: session.amount_total / 100,
           method: session.payment_method_types[0],
           paymentDate: new Date(),
@@ -37,7 +43,7 @@ export const updatePaymentAction = async ({ sessionId }: UpdatePaymentActionProp
       await db.paymentHistory.create({
         data: {
           paymentId: payment.id,
-          userId
+          studentAdditionalDataId: userFromDB?.StudentAdditionalData?.id
         }
       })
 
