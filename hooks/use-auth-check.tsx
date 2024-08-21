@@ -11,7 +11,6 @@ const useAuthCheck = () => {
 
   useEffect(() => {
     if (status === "loading") return 
-    console.log(`status, `, status)
     const checkAccess = async () => {
       if (session) {
         const userId = session.user.id

@@ -91,7 +91,6 @@ export async function createTrainingAction({
 
 
 export async function updateTrainingAction(studentID: string, data: { blocks: CreateTrainingProps["blocks"] }) {
-  console.log(data);
   const { blocks } = data;
 
   if (!blocks || blocks.length === 0) {

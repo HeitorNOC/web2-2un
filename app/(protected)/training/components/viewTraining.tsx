@@ -42,7 +42,6 @@ const ViewTraining: FC<ViewTrainingProps> = ({ isOpen, trainings, onCancel }) =>
                 <p>Descrição: {exercise.description}</p>
                 <p>Séries: {exercise.series} x Repetições: {exercise.repetitions}</p>
                 <p>Carga Sugerida: {exercise.suggestedWeight} kg</p>
-                {/* Divider */}
                 {index < trainings[0].blocks[selectedBlockIndex].exercises.length - 1 && (
                   <div className="border-t border-gray-500 my-4"></div>
                 )}
