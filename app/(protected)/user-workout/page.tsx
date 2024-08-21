@@ -21,7 +21,7 @@ const UserWorkout: FC = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if (actualUser.role !== Role.INSTRUCTOR) {
+        if (actualUser.role !== Role.STUDENT) {
             router.push("/unauthorized");
         } else {
 
