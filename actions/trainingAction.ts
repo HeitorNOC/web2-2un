@@ -19,6 +19,15 @@ interface CreateTrainingProps {
   }[]
 }
 
+interface WorkoutData {
+  trainingId: string;
+  blockId: string;
+  userId: string;
+  weights: { [exerciseId: string]: string };
+  workoutTime: string;
+  intensity: string;
+}
+
 export async function createTrainingAction({
   studentId,
   instructorId,
@@ -331,4 +340,64 @@ export async function deleteTrainingAction(id: string) {
       return { success: false, error: 'Erro ao deletar o training' }
     }
   
+}
+
+export async function fetchTrainings(userId: string) {
+  try {
+    const trainings = await db.training.findMany({
+      where: {
+        student: {
+          userId: userId
+        }
+      },
+      include: {
+        blocks: {
+          include: {
+            exercises: {
+              include: {
+                machine: true,
+              },
+            },
+          },
+        },
+        instructor: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+    return trainings;
+  } catch (error) {
+    console.error("Erro ao buscar treinos:", error);
+    throw new Error("Não foi possível buscar os treinos.");
+  }
+}
+
+export async function logWorkoutEntries(entries: Array<{
+  trainingBlockId: string,
+  exerciseId: string,
+  userId: string,
+  weightUsed: number,
+  intensity: string,
+  duration: number,
+}>) {
+  try {
+    for (const entry of entries) {
+      await db.workoutLog.create({
+        data: {
+          trainingBlockId: entry.trainingBlockId,
+          exerciseId: entry.exerciseId,
+          userId: entry.userId,
+          weightUsed: entry.weightUsed,
+          intensity: entry.intensity,
+          duration: entry.duration,
+        },
+      });
+    }
+    return { success: true };
+  } catch (error) {
+    console.error("Erro ao registrar entradas de treino:", error);
+    return { success: false, error: "Erro ao registrar entradas de treino." };
+  }
 }

@@ -24,6 +24,7 @@ model User {
   StudentAdditionalData       StudentAdditionalData?       @relation("StudentUser")
   InstructorAdditionalData    InstructorAdditionalData?    @relation("InstructorUser")
   StudentEvolution            StudentEvolution[]
+  WorkoutLog                  WorkoutLog[]
 
   @@index([role])
 }
@@ -160,15 +161,31 @@ model Training {
   updatedAt    DateTime                 @default(now())
 }
 
+model WorkoutLog {
+  id              String        @id @default(cuid())
+  trainingBlockId String
+  trainingBlock   TrainingBlock @relation(fields: [trainingBlockId], references: [id])
+  userId          String
+  user            User          @relation(fields: [userId], references: [id])
+  exerciseId      String
+  exercise        Exercise      @relation(fields: [exerciseId], references: [id])
+  weightUsed      Float?
+  intensity       String
+  duration        Int // Duration in minutes
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @default(now())
+}
+
 model TrainingBlock {
-  id         String     @id @default(cuid())
+  id         String       @id @default(cuid())
   name       String
   type       String
   trainingId String
-  training   Training   @relation(fields: [trainingId], references: [id], onDelete: Cascade)
+  training   Training     @relation(fields: [trainingId], references: [id])
   exercises  Exercise[]
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  WorkoutLog WorkoutLog[]
 }
 
 model Exercise {
@@ -178,12 +195,13 @@ model Exercise {
   machineId       String
   machine         Machine       @relation(fields: [machineId], references: [id])
   trainingBlockId String
-  trainingBlock   TrainingBlock @relation(fields: [trainingBlockId], references: [id], onDelete: Cascade)
+  trainingBlock   TrainingBlock @relation(fields: [trainingBlockId], references: [id])
   series          Int?
   repetitions     Int?
   suggestedWeight Float?
   createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  updatedAt       DateTime      @default(now())
+  WorkoutLog      WorkoutLog[]
 }
 
 model StudentEvolution {
