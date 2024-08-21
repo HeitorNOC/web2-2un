@@ -313,34 +313,70 @@ export async function fetchMachinesAction({
 }
 
 export async function deleteTrainingAction(id: string) {
+  console.log('id:', id);
   if (!id) {
-    return { success: false, error: 'id do usuário vazio' }
+    return { success: false, error: 'id do usuário vazio' };
   }
 
   try {
-      const getUserFromDB  = await db.studentAdditionalData.findFirst({
-        where: {
-          userId: id
+    const getUserFromDB = await db.studentAdditionalData.findFirst({
+      where: {
+        userId: id,
+      },
+      include: {
+        Training: {
+          include: {
+            blocks: {
+              include: {
+                exercises: true,
+              },
+            },
+          },
         },
-        include: {
-          Training: true
-        }
-      })
+      },
+    });
 
-      if (!getUserFromDB) {
-        return { success: false, error: 'usuário invalido' }
-      }
+    console.log('get:', getUserFromDB);
 
-      await db.trainingBlock.deleteMany({ where: { trainingId: getUserFromDB.Training?.id } })
-      await db.training.delete({ where: { id: getUserFromDB.Training?.id } })
-
-      return { success: true }
-    } catch (error) {
-      console.error("Erro ao deletar o training:", error);
-      return { success: false, error: 'Erro ao deletar o training' }
+    if (!getUserFromDB || !getUserFromDB.Training) {
+      return { success: false, error: 'usuário inválido ou sem treinamento associado' };
     }
-  
+
+    const trainingId = getUserFromDB.Training.id;
+
+    await db.workoutLog.deleteMany({
+      where: {
+        trainingBlock: {
+          trainingId: trainingId,
+        },
+      },
+    });
+
+    for (const block of getUserFromDB.Training.blocks) {
+      await db.exercise.deleteMany({
+        where: {
+          trainingBlockId: block.id,
+        },
+      });
+    }
+
+    await db.trainingBlock.deleteMany({
+      where: {
+        trainingId: trainingId,
+      },
+    });
+
+    await db.training.delete({
+      where: { id: trainingId },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error('Erro ao deletar o treinamento:', error);
+    return { success: false, error: 'Erro ao deletar o treinamento' };
+  }
 }
+
 
 export async function fetchTrainings(userId: string) {
   try {
