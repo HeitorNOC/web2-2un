@@ -24,38 +24,40 @@ export async function createTrainingAction({
   instructorId,
   blocks,
 }: CreateTrainingProps) {
-  console.log('create blocks: ', blocks)
-  console.log('create blocks: ', studentId)
-  console.log('create blocks: ', instructorId)
   try {
-    let instructorData
-    let studentData
+    // Verifique se o estudante já possui um treino
+    const existingTraining = await db.training.findUnique({
+      where: { studentId }
+    });
 
-    if (instructorId) {
-      instructorData = await db.user.findUnique({
-        where: { id: instructorId },
-        include: {
-          InstructorAdditionalData: true
-        }
-      })
-
+    if (existingTraining) {
+      return { success: false, error: "Este estudante já possui um treino." };
     }
+
+    // Verifique os dados do instrutor e do estudante
+    const instructorData = await db.user.findUnique({
+      where: { id: instructorId },
+      include: {
+        InstructorAdditionalData: true
+      }
+    });
+
     if (!instructorData || !instructorData.InstructorAdditionalData) {
-      return { success: false, error: "Instrutor não encontrado ou inválido" }
+      return { success: false, error: "Instrutor não encontrado ou inválido" };
     }
-    if (studentId) {
-      studentData = await db.user.findUnique({
-        where: { id: studentId },
-        include: {
-          StudentAdditionalData: true
-        }
-      })
 
-    }
+    const studentData = await db.user.findUnique({
+      where: { id: studentId },
+      include: {
+        StudentAdditionalData: true
+      }
+    });
+
     if (!studentData || !studentData.StudentAdditionalData || !studentData.StudentAdditionalData.id) {
-      return { success: false, error: "Instrutor não encontrado ou inválido" }
+      return { success: false, error: "Estudante não encontrado ou inválido" };
     }
-    console.log(`block: `, blocks[0].exercises)
+
+    // Criação do novo treino
     const training = await db.training.create({
       data: {
         studentId: studentData.StudentAdditionalData.id,
@@ -71,44 +73,7 @@ export async function createTrainingAction({
                 machineId: exercise.machineId,
                 series: parseInt(exercise.series, 10),
                 repetitions: parseInt(exercise.repetitions, 10),
-                suggestedWeight: parseFloat(exercise.suggestedWeight)
-              }))
-            },
-          })),
-        },
-      },
-    })
-
-    return { success: true, training }
-  } catch (error) {
-    console.error("Erro ao criar treino:", error)
-    return { success: false, error: "Erro ao criar treino." }
-  }
-}
-
-
-export async function updateTrainingAction(trainingId: string, data: { blocks: CreateTrainingProps["blocks"] }) {
-  const { blocks } = data;
-
-  try {
-    const training = await db.training.update({
-      where: { id: trainingId },
-      data: {
-        blocks: {
-          deleteMany: {}, // Remove todos os blocos existentes antes de adicionar os novos
-          create: blocks.map((block) => ({
-            name: block.name,
-            type: block.type,
-            exercises: {
-              create: block.exercises.map((exercise) => ({
-                name: exercise.name,
-                description: exercise.description,
-                machine: {
-                  connect: { id: exercise.machineId }
-                },
-                series: parseInt(exercise.series, 10),
-                repetitions: parseInt(exercise.repetitions, 10),
-                suggestedWeight: parseFloat(exercise.suggestedWeight)
+                suggestedWeight: parseFloat(exercise.suggestedWeight),
               })),
             },
           })),
@@ -118,10 +83,113 @@ export async function updateTrainingAction(trainingId: string, data: { blocks: C
 
     return { success: true, training };
   } catch (error) {
+    console.error("Erro ao criar treino:", error);
+    return { success: false, error: "Erro ao criar treino." };
+  }
+}
+
+
+
+export async function updateTrainingAction(studentID: string, data: { blocks: CreateTrainingProps["blocks"] }) {
+  console.log(data);
+  const { blocks } = data;
+
+  if (!blocks || blocks.length === 0) {
+    console.error("Erro: Nenhum bloco fornecido para atualização.");
+    return { success: false, error: "Nenhum bloco fornecido para atualização." };
+  }
+
+  try {
+    // Verifica se o treinamento existe
+    const existingTraining = await db.training.findFirst({
+      where: {
+        student: {
+          userId: studentID,
+        },
+      },
+      include: {
+        blocks: {
+          include: {
+            exercises: true,
+          },
+        },
+        student: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    if (!existingTraining) {
+      return { success: false, error: "Treinamento não encontrado." };
+    }
+
+    // Atualizar ou criar blocos
+    for (const block of blocks) {
+      if (!block.exercises || block.exercises.length === 0) {
+        console.error("Erro: O bloco não contém exercícios.");
+        continue;
+      }
+
+      const existingBlock = existingTraining.blocks.find(
+        (existingBlock) => existingBlock.name === block.name && existingBlock.type === block.type
+      );
+
+      if (existingBlock) {
+        // Atualiza o bloco existente
+        await db.trainingBlock.update({
+          where: { id: existingBlock.id },
+          data: {
+            name: block.name,
+            type: block.type,
+            exercises: {
+              deleteMany: {}, // Remove os exercícios antigos
+              create: block.exercises.map((exercise) => ({
+                name: exercise.name,
+                description: exercise.description || "",
+                machine: {
+                  connect: { id: exercise.machineId },
+                },
+                series: parseInt(exercise.series, 10),
+                repetitions: parseInt(exercise.repetitions, 10),
+                suggestedWeight: parseFloat(exercise.suggestedWeight),
+              })),
+            },
+          },
+        });
+      } else {
+        // Cria um novo bloco se não existir
+        await db.trainingBlock.create({
+          data: {
+            trainingId: existingTraining.id,
+            name: block.name,
+            type: block.type,
+            exercises: {
+              create: block.exercises.map((exercise) => ({
+                name: exercise.name,
+                description: exercise.description || "",
+                machine: {
+                  connect: { id: exercise.machineId },
+                },
+                series: parseInt(exercise.series, 10),
+                repetitions: parseInt(exercise.repetitions, 10),
+                suggestedWeight: parseFloat(exercise.suggestedWeight),
+              })),
+            },
+          },
+        });
+      }
+    }
+
+    return { success: true };
+  } catch (error) {
     console.error("Erro ao atualizar treino:", error);
     return { success: false, error: "Erro ao atualizar treino." };
   }
 }
+
+
 
 export async function fetchTrainingsForStudent(studentId: string) {
   try {
@@ -185,7 +253,7 @@ export async function fetchAssociatedStudents(instructorId: string) {
       },
       include: {
         user: true,
-        training: {
+        Training: {
           include: {
             blocks: {
               include: {
@@ -247,21 +315,17 @@ export async function deleteTrainingAction(id: string) {
           userId: id
         },
         include: {
-          training: true
+          Training: true
         }
       })
-      console.log(`id: `, id)
-      console.log(`getUserFromDB: `, getUserFromDB)
+
       if (!getUserFromDB) {
         return { success: false, error: 'usuário invalido' }
       }
-      await db.training.delete({
-        where: {
-          id: getUserFromDB.training?.id
-        },
-      });
 
-      console.log("Training deletado com sucesso!");
+      await db.trainingBlock.deleteMany({ where: { trainingId: getUserFromDB.Training?.id } })
+      await db.training.delete({ where: { id: getUserFromDB.Training?.id } })
+
       return { success: true }
     } catch (error) {
       console.error("Erro ao deletar o training:", error);

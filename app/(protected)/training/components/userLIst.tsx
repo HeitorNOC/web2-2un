@@ -10,7 +10,7 @@ interface UserListProps {
 }
 
 const UserList: FC<UserListProps> = ({ users, onCreateTraining, onViewTraining, onEditTraining, onDeleteTraining }) => {
-  console.log(users)
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-slate-900">
@@ -27,10 +27,10 @@ const UserList: FC<UserListProps> = ({ users, onCreateTraining, onViewTraining, 
               <td className="px-6 py-4 border-b">{user.user.name}</td>
               <td className="px-6 py-4 border-b">{user.user.email}</td>
               <td className="px-6 py-4 border-b flex space-x-2">
-                <Button onClick={() => onViewTraining(user.user)}>Ver Treino</Button>
-                <Button disabled={user.training} onClick={() => onCreateTraining(user.user)}>Criar Treino</Button>
-                <Button disabled={!user.training} onClick={() => onEditTraining(user.user)}>Editar Treino</Button>
-                <Button onClick={() => onDeleteTraining(user.user)}>Apagar Treino</Button>
+                <Button disabled={!user.Training} onClick={() => onViewTraining(user.user)}>Ver Treino</Button>
+                <Button disabled={user.Training} onClick={() => onCreateTraining(user.user)}>Criar Treino</Button>
+                <Button disabled={!user.Training} onClick={() => onEditTraining(user.user)}>Editar Treino</Button>
+                <Button disabled={!user.Training} onClick={() => onDeleteTraining(user.user)}>Apagar Treino</Button>
               </td>
             </tr>
           ))}

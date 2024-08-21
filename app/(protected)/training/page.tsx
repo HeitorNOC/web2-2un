@@ -72,6 +72,7 @@ const StudentTrainingPage = () => {
     setLoading(true);
     try {
       const { trainings } = await fetchTrainingsForStudent(studentId);
+
       setTrainings(trainings || {});
     } catch (error) {
       console.error("Erro ao buscar treinos:", error);
@@ -133,7 +134,7 @@ const StudentTrainingPage = () => {
 
   const handleDeleteTrainingAction = () => {
     if (!selectedStudent) return;
-    console.log('selectedStudent: ',selectedStudent)
+
     startTransition(() => {
       setLoading(true);
       deleteTrainingAction(selectedStudent.id)
@@ -198,7 +199,6 @@ const StudentTrainingPage = () => {
         <ViewTraining
           isOpen={isTrainingModalOpen}
           trainings={trainings}
-          machines={machines}
           onCancel={() => setIsTrainingModalOpen(false)}
         />
       )}

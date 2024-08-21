@@ -1,8 +1,9 @@
 import { FC, useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Button } from "../../../../components/ui/button";
 
 interface UpdateTrainingProps {
   isOpen: boolean;
@@ -53,12 +54,10 @@ const UpdateTraining: FC<UpdateTrainingProps> = ({
     }
   }, [trainings, currentBlockIndex]);
 
-  const handleNextStep = () => {
-    setCurrentStep(2);
-  };
-
-  const handleBlockSelection = (blockIndex: number) => {
-    setCurrentBlockIndex(blockIndex);
+  const handleAddExercise = () => {
+    const updatedExercises = [...currentBlock.exercises, { name: "", machineId: "", description: "", suggestedWeight: "", series: "", repetitions: "" }];
+    setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
+    setCurrentExerciseIndex(updatedExercises.length - 1); // Go to the new exercise
   };
 
   const handleNextExercise = () => {
@@ -73,18 +72,30 @@ const UpdateTraining: FC<UpdateTrainingProps> = ({
     }
   };
 
-  const handleSaveBlock = () => {
+  const handleSaveBlock = async () => {
     const updatedBlocks = [...blocks];
-    if (currentBlockIndex !== undefined) {
+  
+    if (currentBlockIndex !== undefined && currentBlockIndex < blocks.length) {
+      // Atualiza bloco existente
       updatedBlocks[currentBlockIndex] = currentBlock;
     } else {
-      updatedBlocks.push(currentBlock);
+      // Adiciona novo bloco (sem id)
+      updatedBlocks.push({ ...currentBlock });
     }
-
+  
     setBlocks(updatedBlocks);
-    setCurrentBlock({ name: "", type: "", exercises: [] });
-    setCurrentStep(1);
+  
+    // Salva todos os blocos e fecha o modal
+    try {
+      await onConfirm({ studentId, instructorId, blocks: updatedBlocks });
+      onCancel(); // Fecha o modal após salvar
+    } catch (error) {
+      console.error("Erro ao salvar bloco:", error);
+    }
   };
+  
+  
+  
 
   const handleSaveAll = async () => {
     try {
@@ -96,18 +107,6 @@ const UpdateTraining: FC<UpdateTrainingProps> = ({
     }
   };
 
-  const renderExerciseNavigation = () => (
-    <div className="flex justify-between items-center mb-4">
-      <Button onClick={handlePrevExercise} disabled={currentExerciseIndex === 0}>
-        Voltar Exercício
-      </Button>
-      <span>{`${currentExerciseIndex + 1} / ${currentBlock.exercises.length !== 0 ? currentBlock.exercises.length : currentBlock.exercises.length + 1}`}</span>
-      <Button onClick={handleNextExercise} disabled={currentExerciseIndex >= currentBlock.exercises.length - 1}>
-        Próximo Exercício
-      </Button>
-    </div>
-  );
-
   return (
     <Dialog open={isOpen} onOpenChange={onCancel}>
       <DialogContent>
@@ -115,10 +114,7 @@ const UpdateTraining: FC<UpdateTrainingProps> = ({
           <DialogTitle>
             {currentStep === 1
               ? "Selecionar Bloco"
-              : currentStep === 2
-              ? "Adicionar/Editar Exercício"
-              : "Definir Bloco"
-            }
+              : "Adicionar/Editar Exercício"}
           </DialogTitle>
         </DialogHeader>
 
@@ -126,7 +122,7 @@ const UpdateTraining: FC<UpdateTrainingProps> = ({
           <div className="space-y-4">
             <h3>Selecione um bloco para editar:</h3>
             {trainings[0].blocks.map((block: any, index: any) => (
-              <Button key={index} onClick={() => handleBlockSelection(index)}>
+              <Button key={index} onClick={() => setCurrentBlockIndex(index)}>
                 {`Bloco: ${block.name} - Tipo: ${block.type}`}
               </Button>
             ))}
@@ -155,79 +151,87 @@ const UpdateTraining: FC<UpdateTrainingProps> = ({
                 <SelectItem value="fullbody">Full Body</SelectItem>
               </SelectContent>
             </Select>
-            <Button onClick={() => setCurrentStep(3)}>Próximo</Button>
-          </div>
-        )}
-
-        {currentStep === 3 && (
-          <div className="space-y-4">
-            {renderExerciseNavigation()}
-
-            <Input
-              placeholder="Nome do Exercício"
-              value={currentBlock.exercises[currentExerciseIndex]?.name || ""}
-              onChange={(e) => {
-                const updatedExercises = [...currentBlock.exercises];
-                updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], name: e.target.value };
-                setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
-              }}
-            />
-            <Select
-              value={currentBlock.exercises[currentExerciseIndex]?.machineId || ""}
-              onValueChange={(value) => {
-                const updatedExercises = [...currentBlock.exercises];
-                updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], machineId: value };
-                setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Selecione a Máquina" />
-              </SelectTrigger>
-              <SelectContent>
-                {machines.map((machine) => (
-                  <SelectItem key={machine.id} value={machine.id}>{machine.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Input
-              placeholder="Descrição"
-              value={currentBlock.exercises[currentExerciseIndex]?.description || ""}
-              onChange={(e) => {
-                const updatedExercises = [...currentBlock.exercises];
-                updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], description: e.target.value };
-                setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
-              }}
-            />
-            <div className="flex space-x-2">
-              <Input
-                placeholder="Séries"
-                value={currentBlock.exercises[currentExerciseIndex]?.series || ""}
-                onChange={(e) => {
-                  const updatedExercises = [...currentBlock.exercises];
-                  updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], series: e.target.value };
-                  setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
-                }}
-              />
-              <span>x</span>
-              <Input
-                placeholder="Repetições"
-                value={currentBlock.exercises[currentExerciseIndex]?.repetitions || ""}
-                onChange={(e) => {
-                  const updatedExercises = [...currentBlock.exercises];
-                  updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], repetitions: e.target.value };
-                  setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
-                }}
-              />
+            <div className="space-y-4">
+              {currentBlock.exercises.length > 0 && (
+                <div className="flex space-between mb-4">
+                  <Button onClick={handlePrevExercise} disabled={currentExerciseIndex === 0}>
+                    Voltar Exercício
+                  </Button>
+                  <span>{`${currentExerciseIndex + 1} / ${currentBlock.exercises.length}`}</span>
+                  <Button onClick={handleNextExercise} disabled={currentExerciseIndex >= currentBlock.exercises.length - 1}>
+                    Próximo Exercício
+                  </Button>
+                </div>
+              )}
+              <div className="space-y-2">
+                <Input
+                  placeholder="Nome do Exercício"
+                  value={currentBlock.exercises[currentExerciseIndex]?.name || ""}
+                  onChange={(e) => {
+                    const updatedExercises = [...currentBlock.exercises];
+                    updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], name: e.target.value };
+                    setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
+                  }}
+                />
+                <Select
+                  value={currentBlock.exercises[currentExerciseIndex]?.machineId || ""}
+                  onValueChange={(value) => {
+                    const updatedExercises = [...currentBlock.exercises];
+                    updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], machineId: value };
+                    setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione a Máquina" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {machines.map((machine) => (
+                      <SelectItem key={machine.id} value={machine.id}>{machine.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
+                  placeholder="Descrição"
+                  value={currentBlock.exercises[currentExerciseIndex]?.description || ""}
+                  onChange={(e) => {
+                    const updatedExercises = [...currentBlock.exercises];
+                    updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], description: e.target.value };
+                    setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
+                  }}
+                />
+                <div className="flex space-x-2">
+                  <Input
+                    placeholder="Séries"
+                    value={currentBlock.exercises[currentExerciseIndex]?.series || ""}
+                    onChange={(e) => {
+                      const updatedExercises = [...currentBlock.exercises];
+                      updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], series: e.target.value };
+                      setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
+                    }}
+                  />
+                  <span>x</span>
+                  <Input
+                    placeholder="Repetições"
+                    value={currentBlock.exercises[currentExerciseIndex]?.repetitions || ""}
+                    onChange={(e) => {
+                      const updatedExercises = [...currentBlock.exercises];
+                      updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], repetitions: e.target.value };
+                      setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
+                    }}
+                  />
+                </div>
+                <Input
+                  placeholder="Carga Sugerida"
+                  value={currentBlock.exercises[currentExerciseIndex]?.suggestedWeight || ""}
+                  onChange={(e) => {
+                    const updatedExercises = [...currentBlock.exercises];
+                    updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], suggestedWeight: e.target.value };
+                    setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
+                  }}
+                />
+              </div>
+              <Button onClick={handleAddExercise}>Adicionar Exercício</Button>
             </div>
-            <Input
-              placeholder="Carga Sugerida"
-              value={currentBlock.exercises[currentExerciseIndex]?.suggestedWeight || ""}
-              onChange={(e) => {
-                const updatedExercises = [...currentBlock.exercises];
-                updatedExercises[currentExerciseIndex] = { ...updatedExercises[currentExerciseIndex], suggestedWeight: e.target.value };
-                setCurrentBlock({ ...currentBlock, exercises: updatedExercises });
-              }}
-            />
             <div className="flex justify-between mt-4">
               <Button variant="outline" onClick={handleSaveBlock}>Salvar Bloco</Button>
             </div>

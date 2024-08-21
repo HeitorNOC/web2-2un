@@ -58,7 +58,7 @@ const UserManagementPage = () => {
         limit: MAX_DATA_PAGE,
         actualUserId: actualUser.id,
       });
-      console.log(`users: `, users)
+
       setUsers(users);
       setTotalUsers(total);
     } catch (error) {

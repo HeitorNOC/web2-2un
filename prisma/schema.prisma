@@ -116,7 +116,7 @@ model StudentAdditionalData {
   Payment              Payment[]
   PaymentHistory       PaymentHistory[]
   trainingId           String?                   @unique
-  training             Training?                 @relation(name: "StudentToTraining", fields: [trainingId], references: [id])
+  Training             Training?
 
   @@index([id])
 }
@@ -153,7 +153,7 @@ model Training {
   id           String                   @id @default(cuid())
   studentId    String                   @unique
   instructorId String
-  student      StudentAdditionalData?   @relation(name: "StudentToTraining")
+  student      StudentAdditionalData    @relation(fields: [studentId], references: [id])
   instructor   InstructorAdditionalData @relation(fields: [instructorId], references: [id])
   blocks       TrainingBlock[]
   createdAt    DateTime                 @default(now())
