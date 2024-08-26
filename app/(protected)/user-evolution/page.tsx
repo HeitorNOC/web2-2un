@@ -90,7 +90,7 @@ const WorkoutLogEvolution = () => {
         return acc;
     }, {});
 
-    return (
+    return workoutLogs.length === 0 ? <h1>Voce não tem evolução</h1> : (
         <div className="p-4">
             {!selectedBlock ? (
                 <Table className="w-full text-sm">

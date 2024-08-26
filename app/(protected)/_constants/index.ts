@@ -4,6 +4,18 @@ export const STUDENT_LINKS = [
     path: "/profile",
   },
   {
+    title: "Pagamento",
+    path: "/payment"
+  },
+  {
+    title: "Treino",
+    path: "/user-workout"
+  },
+  {
+    title: "Evolução",
+    path: "user-evolution"
+  },
+  {
     title: "Settings",
     path: "/settings",
   },
@@ -19,11 +31,11 @@ export const ADMIN_LINKS = [
     path: "/settings",
   },
   {
-    title: "Machines",
+    title: "Máquinas",
     path: "/machines"
   },
   {
-    title: "Instructors",
+    title: "Instrutores",
     path: "/instructors"
   }
 ]
@@ -32,6 +44,22 @@ export const INSTRUCTOR_LINKS = [
   {
     title: "Perfil",
     path: "/profile",
+  },
+  {
+    title: "Usuários",
+    path: "/users"
+  },
+  {
+    title: "Associar aluno",
+    path: "/link-user"
+  },
+  {
+    title: "Treino",
+    path: "/training"
+  },
+  {
+    title: "Máquinas",
+    path: "/machines"
   },
   {
     title: "Settings",

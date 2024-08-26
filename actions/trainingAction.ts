@@ -313,7 +313,7 @@ export async function fetchMachinesAction({
 }
 
 export async function deleteTrainingAction(id: string) {
-  console.log('id:', id);
+
   if (!id) {
     return { success: false, error: 'id do usuário vazio' };
   }
@@ -335,8 +335,6 @@ export async function deleteTrainingAction(id: string) {
         },
       },
     });
-
-    console.log('get:', getUserFromDB);
 
     if (!getUserFromDB || !getUserFromDB.Training) {
       return { success: false, error: 'usuário inválido ou sem treinamento associado' };

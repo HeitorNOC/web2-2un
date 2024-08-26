@@ -27,11 +27,11 @@ export async function GET(req: NextRequest, { params }: { params: { userId: stri
       return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 })
     }
 
-    const isComplete =  user.AdministratorAdditionalData || user.StudentAdditionalData || user.InstructorAdditionalData
-    const hasActivePayment = user.role === Role.STUDENT && user.StudentAdditionalData && user.StudentAdditionalData.Payment.some(payment => payment.status === 'completed' && new Date(payment.paymentDate).getMonth() === new Date().getMonth())
-    const hasAccess = user.role === 'STUDENT' || (user.role === 'INSTRUCTOR')
+    const isComplete = user.AdministratorAdditionalData || user.StudentAdditionalData || user.InstructorAdditionalData
+    const hasActivePayment = user.role === Role.STUDENT && user.StudentAdditionalData && user.StudentAdditionalData.Payment.some(payment => (payment.status === 'paid' || payment.status === 'completed') && (new Date(payment.paymentDate).getMonth() === new Date().getMonth()))
+    const hasAccess = user.role === 'STUDENT' || user.role === 'INSTRUCTOR' || user.role === 'ADMIN'
 
-    return NextResponse.json({ isComplete, hasActivePayment: true, hasAccess }, { status: 200 })
+    return NextResponse.json({ isComplete, hasActivePayment, hasAccess }, { status: 200 })
   } catch (error: any) {
     console.error('Error verifying user:', error)
     return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 })

@@ -223,6 +223,7 @@ model Payment {
   planType                Int
   status                  String
   createdAt               DateTime               @default(now())
+  adjustedExpirationDate  DateTime?
   PaymentHistory          PaymentHistory[]
   StudentAdditionalData   StudentAdditionalData? @relation(fields: [studentAdditionalDataId], references: [id])
   studentAdditionalDataId String?
@@ -232,8 +233,8 @@ model Payment {
 
 model PaymentHistory {
   id                      String                 @id @default(cuid())
-  paymentId               String
-  payment                 Payment                @relation(fields: [paymentId], references: [id])
+  paymentId               String?
+  payment                 Payment?               @relation(fields: [paymentId], references: [id], onDelete: SetNull)
   createdAt               DateTime               @default(now())
   StudentAdditionalData   StudentAdditionalData? @relation(fields: [studentAdditionalDataId], references: [id])
   studentAdditionalDataId String?

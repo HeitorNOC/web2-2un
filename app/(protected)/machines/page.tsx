@@ -28,7 +28,7 @@ const MachineManagementPage = () => {
   const MAX_DATA_PAGE = 10
 
   useEffect(() => {
-    if(actualUser.role != Role.ADMIN){
+    if(actualUser.role === Role.STUDENT){
       router.push('/unauthorized')
     }else{
       startTransition(() => {

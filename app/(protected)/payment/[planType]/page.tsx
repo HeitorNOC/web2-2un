@@ -6,6 +6,7 @@ import axios from 'axios'
 import { loadStripe } from '@stripe/stripe-js'
 import { PlanType } from '@/enums/plan'
 import { useCurrentUser } from '@/hooks/use-current-user'
+import { getUserById } from "../../../../data/user"
 
 const planPrices = {
   [PlanType.NORMAL]: 10000,
@@ -19,12 +20,13 @@ const Payment = ({params}: any ) => {
   const [isValidPlan, setIsValidPlan] = useState<boolean>()
   const [convertedPlanType, setConvertedPlanType] = useState<PlanType | null>(null)
   const user = useCurrentUser()
-
+  let userDB: any
   const isValidPlanType = (value: number): value is PlanType => {
     return Object.values(PlanType).includes(value)
   }
-
+  
   useEffect(() => {
+    init()
     const planTypeNum = parseInt(params.planType, 10)
     if (!isNaN(planTypeNum) && isValidPlanType(planTypeNum)) {
       setIsValidPlan(true)
@@ -33,6 +35,11 @@ const Payment = ({params}: any ) => {
       setIsValidPlan(false)
     }
   }, [params.planType])
+  
+  async function init() {
+
+    userDB = await getUserById(user.id) 
+  }
 
   const handlePayment = async () => {
     if (!convertedPlanType) {
@@ -73,7 +80,7 @@ const Payment = ({params}: any ) => {
       <button
         className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md"
         onClick={handlePayment}
-        disabled={loading}
+        disabled={loading || userDB && userDB?.StudentAdditionalData?.paymentDate !== null}
       >
         {loading ? 'Processando...' : 'Pagar'}
       </button>

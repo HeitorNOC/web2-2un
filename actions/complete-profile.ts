@@ -1,21 +1,28 @@
 "use server"
 
-import { Role } from "@/enums/role"
-import { db } from "@/lib/db"
-import { adminProfileSchema, instructorProfileSchema, studentProfileSchema } from "@/schemas"
+import { Role } from "@/enums/role";
+import { db } from "@/lib/db";
+import { adminProfileSchema, instructorProfileSchema, studentProfileSchema } from "@/schemas";
 
 interface CompleteProfileActionProps {
-    userId: string
-    role: string
-    cpf: string
-    additionalData: any
+    userId: string;
+    role: string;
+    cpf: string;
+    additionalData: any;
 }
 
 export const completeProfileAction = async ({ userId, role, cpf, additionalData }: CompleteProfileActionProps) => {
-    let validatedData
-
+    let validatedData;
 
     try {
+        const existingUser = await db.user.findUnique({
+            where: { cpf },
+        });
+
+        if (existingUser) {
+            return { error: "CPF já está em uso." };
+        }
+
         switch (role) {
             case Role.STUDENT:
                 validatedData = studentProfileSchema.safeParse({
@@ -24,12 +31,13 @@ export const completeProfileAction = async ({ userId, role, cpf, additionalData 
                     weight: additionalData.weight.toString(),
                     bodyFat: additionalData.bodyFat.toString(),
                     ...additionalData,
-                })
+                });
 
                 if (!validatedData.success) {
-                    console.log(validatedData.error.errors)
-                    return { error: "Invalid fields." }
+                    console.log(validatedData.error.errors);
+                    return { error: "Invalid fields." };
                 }
+
                 await db.studentAdditionalData.create({
                     data: {
                         userId,
@@ -42,50 +50,58 @@ export const completeProfileAction = async ({ userId, role, cpf, additionalData 
                         birthDate: new Date(validatedData.data.birthDate).toISOString(),
                         phone: validatedData.data.phone,
                     },
-                })
-                break
+                });
+                break;
+
             case Role.INSTRUCTOR:
                 validatedData = instructorProfileSchema.safeParse({
                     cpf,
                     ...additionalData,
-                })
+                });
+
                 if (!validatedData.success) {
-                    return { error: "Invalid fields." }
+                    return { error: "Invalid fields." };
                 }
+
                 await db.instructorAdditionalData.create({
                     data: {
                         userId,
                         cref: validatedData.data.cref,
                         phone: validatedData.data.phone,
                     },
-                })
-                break
+                });
+                break;
+
             case Role.ADMIN:
                 validatedData = adminProfileSchema.safeParse({
                     cpf,
-                })
+                });
+
                 if (!validatedData.success) {
-                    return { error: "Invalid fields." }
+                    return { error: "Invalid fields." };
                 }
+
                 await db.administratorAdditionalData.create({
                     data: {
                         userId,
                     },
-                })
-                break
+                });
+                break;
         }
 
         if (validatedData) {
             await db.user.update({
                 where: { id: userId },
                 data: { cpf: validatedData.data.cpf },
-            })
+            });
         } else {
-            return { error: 'Erro ao completar o cadastro.' }
+            return { error: 'Erro ao completar o cadastro.' };
         }
-        return { success: "Cadastro finalizado com sucesso." }
+
+        return { success: "Cadastro finalizado com sucesso." };
+
     } catch (error) {
-        console.error('Error completing profile:', error)
-        throw new Error('Erro ao completar o cadastro.')
+        console.error('Error completing profile:', error);
+        throw new Error('Erro ao completar o cadastro.');
     }
-}
+};
