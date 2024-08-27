@@ -30,7 +30,7 @@ export const SettingsSchema = z
   .object({
     name: z.optional(z.string()),
     isTwoFactorEnabled: z.optional(z.boolean()),
-    role: z.enum(["ADMIN", "USER", "INSTRUCTOR"]),
+    role: z.enum(["ADMIN", "STUDENT", "INSTRUCTOR"]),
     email: z.optional(z.string().email()),
     password: z.optional(z.string().min(1)),
     newPassword: z.optional(
@@ -198,3 +198,27 @@ export const createInstructorSchema = z.object({
     .max(6, { message: "CREF deve ter no máximo 6 caracteres." }),
   image: z.string().url({ message: "Por favor, insira uma URL de imagem válida." }).optional(),
 })
+
+export const UserProfileSchema = z.object({
+  cpf: z.string().nonempty("CPF é obrigatório"),
+  name: z.string().optional(),
+  email: z.string().email("Email inválido").optional(),
+  phone: z.string().optional(),
+  image: z.string().nullable(),
+  role: z.string().nonempty("Role é obrigatória"),
+});
+
+export const StudentProfileSchema = UserProfileSchema.extend({
+  gender: z.string().optional(),
+  birthDate: z.string().optional(),
+  height: z.string().optional(),
+  weight: z.string().optional(),
+  bf: z.string().optional(),
+  comorbidity: z.string().optional(),
+});
+
+export const InstructorProfileSchema = UserProfileSchema.extend({
+  cref: z.string().optional(),
+});
+
+export const AdminProfileSchema = UserProfileSchema;

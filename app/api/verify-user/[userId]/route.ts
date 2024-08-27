@@ -28,7 +28,7 @@ export async function GET(req: NextRequest, { params }: { params: { userId: stri
     }
 
     const isComplete = user.AdministratorAdditionalData || user.StudentAdditionalData || user.InstructorAdditionalData
-    const hasActivePayment = user.role === Role.STUDENT && user.StudentAdditionalData && user.StudentAdditionalData.Payment.some(payment => (payment.status === 'paid' || payment.status === 'completed') && (new Date(payment.paymentDate).getMonth() === new Date().getMonth()))
+    const hasActivePayment = (user.role === Role.STUDENT && user.StudentAdditionalData && user.StudentAdditionalData.Payment.some(payment => (payment.status === 'paid' || payment.status === 'completed') && (new Date(payment.paymentDate).getMonth() === new Date().getMonth())) || user.role === Role.INSTRUCTOR || user.role === Role.ADMIN)
     const hasAccess = user.role === 'STUDENT' || user.role === 'INSTRUCTOR' || user.role === 'ADMIN'
 
     return NextResponse.json({ isComplete, hasActivePayment, hasAccess }, { status: 200 })

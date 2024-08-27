@@ -12,9 +12,14 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { useCurrentUser } from "@/hooks/use-current-user"
 import LogoutButton from "@/components/auth/logout-button"
+import { useEffect } from "react"
 
 const UserButton = () => {
   const user = useCurrentUser()
+
+  useEffect(() => {
+
+  }, [user])
 
   return (
     <DropdownMenu>
