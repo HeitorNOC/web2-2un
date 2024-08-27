@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { Button } from "@/components/ui/button"
-import { FaEye, FaPlus, FaEdit, FaTrash, FaUser } from "react-icons/fa"
+import { FaEye, FaPlus, FaEdit, FaTrash, FaUser, FaUnlink } from "react-icons/fa"
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 
 interface UserListProps {
@@ -9,9 +9,10 @@ interface UserListProps {
   onViewTraining: (student: any) => void
   onEditTraining: (student: any) => void
   onDeleteTraining: (student: any) => void
+  onUnLinkUser: (student: any) => void
 }
 
-const UserList: FC<UserListProps> = ({ users, onCreateTraining, onViewTraining, onEditTraining, onDeleteTraining }) => {
+const UserList: FC<UserListProps> = ({ users, onCreateTraining, onViewTraining, onEditTraining, onDeleteTraining, onUnLinkUser }) => {
 
   return (
     <div className="overflow-x-auto">
@@ -41,10 +42,45 @@ const UserList: FC<UserListProps> = ({ users, onCreateTraining, onViewTraining, 
               <td className="px-6 py-4 border-b">{user.user.name}</td>
               <td className="px-6 py-4 border-b">{user.user.email}</td>
               <td className="px-6 py-4 border-b flex space-x-2">
-              <Button disabled={!user.Training} onClick={() => onViewTraining(user.user)}><FaEye /></Button>
-              <Button disabled={user.Training} onClick={() => onCreateTraining(user.user)}><FaPlus /></Button>
-              <Button disabled={!user.Training} onClick={() => onEditTraining(user.user)}><FaEdit /></Button>
-              <Button disabled={!user.Training} onClick={() => onDeleteTraining(user.user)}><FaTrash /></Button>
+              <Button 
+                disabled={!user.Training} 
+                onClick={() => onViewTraining(user.user)} 
+                title="Visualizar Treinamento"
+              >
+              <FaEye />
+              </Button>
+
+              <Button 
+              disabled={user.Training} 
+              onClick={() => onCreateTraining(user.user)} 
+              title="Criar Treinamento"
+              >
+              <FaPlus />
+              </Button>
+
+              <Button 
+              disabled={!user.Training} 
+              onClick={() => onEditTraining(user.user)} 
+              title="Editar Treinamento"
+              >
+              <FaEdit />
+              </Button>
+
+              <Button 
+              disabled={!user.Training} 
+              onClick={() => onDeleteTraining(user.user)} 
+              title="Excluir Treinamento"
+              >
+              <FaTrash />
+              </Button>
+
+              <Button 
+              disabled={user.Training} 
+              onClick={() => onUnLinkUser(user.user)} 
+              title="Desvincular Usuário"
+              >
+              <FaUnlink/>
+              </Button>
               </td>
             </tr>
           ))}

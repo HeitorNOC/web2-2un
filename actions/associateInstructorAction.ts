@@ -50,3 +50,17 @@ export async function associateInstructorAction({ studentId, instructorId }: Ass
     return { success: false, error: "Erro ao associar o professor" }
   }
 }
+
+export async function unlinkStudentAction(studentId: string): Promise<{ success: boolean; message: string }> {
+  try {
+    await db.studentAdditionalData.update({
+      where: { userId: studentId },
+      data: { assignedInstructorId: null },
+    });
+
+    return { success: true, message: 'Student successfully unlinked from the instructor.' }
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: 'An error occurred while unlinking the student.' }
+  }
+}

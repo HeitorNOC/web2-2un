@@ -18,15 +18,18 @@ import CreateTraining from "./components/createTraining";
 import UpdateTraining from "./components/updateTraining";
 import ViewTraining from "./components/viewTraining";
 import DeleteTrainingModal from "./components/deleteTraining";
+import { unlinkStudentAction } from "@/actions/associateInstructorAction";
+import UnlinkUserModal from "./components/unlinkUser";
 
 const StudentTrainingPage = () => {
   const [students, setStudents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const [isTrainingModalOpen, setIsTrainingModalOpen] = useState(false);
+  const [isUnlinkModalOpen, setIsUnlinkModalOpen] = useState(false);
   const [machines, setMachines] = useState<any[]>([]);
   const [trainings, setTrainings] = useState<any>();
-  const [modalType, setModalType] = useState<'create' | 'update' | 'view' | 'delete' | null>(null);
+  const [modalType, setModalType] = useState<'create' | 'update' | 'view' | 'delete' | 'unlink' | null>(null);
   const router = useRouter();
   const actualUser = useCurrentUser();
 
@@ -108,6 +111,39 @@ const StudentTrainingPage = () => {
     setIsTrainingModalOpen(true);
   };
 
+  const handleUnlinkUser =  async (student: any) => {
+    setSelectedStudent(student);
+    setModalType('unlink');
+    setIsUnlinkModalOpen(true);
+  };
+
+  const handleConfirmUnlink = async () => {
+    if (!selectedStudent) return;
+
+    setLoading(true);
+
+    try {
+      await deleteTrainingAction(selectedStudent.id);
+      
+      const result = await unlinkStudentAction(selectedStudent.id);
+
+      if (result.success) {
+        setStudents((prevStudents) =>
+          prevStudents.filter((student) => student.id !== selectedStudent.id)
+        );
+      } else {
+        console.error(result.message);
+      }
+    } catch (error) {
+      console.error("Erro ao desassociar aluno:", error);
+    } finally {
+      setLoading(false);
+      setIsUnlinkModalOpen(false);
+      setSelectedStudent(null);
+      fetchStudents();
+    }
+  };
+
   const handleTrainingSave = async (data: any) => {
     setLoading(true);
     const trainingData = {
@@ -168,6 +204,7 @@ const StudentTrainingPage = () => {
             onViewTraining={handleViewTraining}
             onEditTraining={handleEditTraining}
             onDeleteTraining={handleDeleteTraining}
+            onUnLinkUser={handleUnlinkUser}
           />
         </div>
       </section>
@@ -208,6 +245,15 @@ const StudentTrainingPage = () => {
           onConfirm={handleDeleteTrainingAction}
           onCancel={() => setSelectedStudent(null)}
           isOpen={!!selectedStudent}
+        />
+      )}
+
+    {isUnlinkModalOpen && modalType === 'unlink' && ( 
+        <UnlinkUserModal
+          isOpen={isUnlinkModalOpen}
+          student={selectedStudent}
+          onConfirm={handleConfirmUnlink}
+          onCancel={() => setIsUnlinkModalOpen(false)}
         />
       )}
     </div>

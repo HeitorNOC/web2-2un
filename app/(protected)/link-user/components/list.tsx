@@ -45,9 +45,6 @@ const UserList: FC<UserListProps> = ({ users, onLink, onUnlink }) => {
                 <Button title="Associar" variant="outline" onClick={() => onLink(user)}>
                   <FaLink />
                 </Button>
-                <Button title="Desassociar" variant="destructive" onClick={() => onUnlink(user)}>
-                  <FaUnlink/>
-                </Button>
                 </div>
               </td>
             </tr>
