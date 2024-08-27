@@ -97,23 +97,6 @@ const InstructorManagementPage = () => {
     })
   }
 
-  const handleCreateInstructor = (data: any) => {
-    startTransition(() => {
-      setLoading(true)
-      createInstructor(data)
-        .then(() => {
-          setIsCreateModalOpen(false)
-          fetchInstructors()
-        })
-        .catch((error) => {
-          console.error("Erro ao criar professor:", error)
-        })
-        .finally(() => {
-          setLoading(false)
-        })
-    })
-  }
-
   const handleChangePage = (newPage: number) => {
     setPage(newPage)
   }
@@ -139,8 +122,7 @@ const InstructorManagementPage = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <Button onClick={() => setIsCreateModalOpen(true)}>Cadastrar Professor</Button>
-          </div>
+            </div>
         </div>
 
         <div className="mt-4">
@@ -165,7 +147,7 @@ const InstructorManagementPage = () => {
               </div>
             </>
           ) : (
-            <p className="text-center text-gray-500">Nenhum professor cadastrado. Use o botão acima para cadastrar um novo professor.</p>
+            <p className="text-center text-gray-500">Nenhum professor cadastrado.</p>
           )}
         </div>
       </section>
@@ -185,14 +167,6 @@ const InstructorManagementPage = () => {
           instructor={instructorToEdit}
           onConfirm={handleUpdateInstructor}
           onCancel={() => setIsModalOpen(false)}
-        />
-      )}
-
-      {isCreateModalOpen && (
-        <CreateInstructorModal
-          isOpen={isCreateModalOpen}
-          onConfirm={handleCreateInstructor}
-          onCancel={() => setIsCreateModalOpen(false)}
         />
       )}
     </div>

@@ -5,13 +5,12 @@ import { Role } from "@/enums/role";
 import { Pager } from "@/components/pager";
 import Spinner from "@/components/spinner";
 import UserList from "./components/list";
-import UnlinkUserModal from "./components/unlink";
-
+import { UnlinkUserModal } from "./components/unlink";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useRouter } from "next/navigation";
 import AssociateInstructorModal from "./components/link";
 import { associateInstructorAction } from "@/actions/associateInstructorAction";
-import { fetchUsersAction } from "@/actions/user-management";
+import { fetchUsersActionWithoutInstructor } from "@/actions/user-management";
 import { fetchInstructorsAction } from "@/actions/instructor-management";
 
 const UserManagementPage = () => {
@@ -52,7 +51,7 @@ const UserManagementPage = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const { users, total } = await fetchUsersAction({
+      const { users, total } = await fetchUsersActionWithoutInstructor({
         role: Role.STUDENT,
         page,
         limit: MAX_DATA_PAGE,
@@ -69,23 +68,22 @@ const UserManagementPage = () => {
   };
 
   const handleUnlinkUser = () => {
-    if (!userToUnlink) return;
-
+    if (!userToUnlink) return
     startTransition(() => {
-      setLoading(true);
+      setLoading(true)
       associateInstructorAction({ studentId: userToUnlink.id, instructorId: null })
         .then(() => {
-          setUserToUnlink(null);
-          fetchUsers();
+          setUserToUnlink(null)
+          fetchUsers()
         })
         .catch((error) => {
-          console.error("Erro ao desassociar professor:", error);
+          console.error("Erro ao desassociar professor:", error)
         })
         .finally(() => {
-          setLoading(false);
-        });
-    });
-  };
+          setLoading(false)
+        })
+    })
+  }
 
   const handleAssignInstructor = (data: any) => {
     if (!userToAssign) return;

@@ -18,7 +18,10 @@ interface UnlinkUserModalProps {
   onCancel: () => void
 }
 
-const UnlinkUserModal: FC<UnlinkUserModalProps> = ({ isOpen, user, actualUser, onConfirm, onCancel }) => {
+export const UnlinkUserModal: FC<UnlinkUserModalProps> = ({ isOpen, user, onConfirm, onCancel }) => {
+  const handleConfirm = () => {
+    onConfirm();
+  };
   return (
     <Dialog open={isOpen} onOpenChange={onCancel}>
       <DialogContent>
@@ -29,7 +32,9 @@ const UnlinkUserModal: FC<UnlinkUserModalProps> = ({ isOpen, user, actualUser, o
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="destructive" onClick={onConfirm} disabled={actualUser.role === Role.INSTRUCTOR && actualUser.id === user?.StudentAdditionalData?.userId}>
+          <Button
+            variant="destructive"
+            onClick={handleConfirm}>
             Confirmar
           </Button>
           <Button variant="outline" onClick={onCancel}>
@@ -38,7 +43,5 @@ const UnlinkUserModal: FC<UnlinkUserModalProps> = ({ isOpen, user, actualUser, o
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-}
-
-export default UnlinkUserModal
+  );
+};

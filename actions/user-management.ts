@@ -20,8 +20,10 @@ export async function fetchUsersAction({
 }: FetchUsersActionProps): Promise<{ users: any; total: number }>  {
     const currentPage = Math.max(0, page)
     const skip = currentPage * limit
-    const whereClause = role ? { role, id: { not: actualUserId } } : { id: { not: actualUserId } }
-
+    const whereClause = {
+      role: Role.STUDENT, 
+      id: { not: actualUserId } 
+  };
     const [users, total] = await Promise.all([
         db.user.findMany({
             where: whereClause,
@@ -39,6 +41,41 @@ export async function fetchUsersAction({
         users,
         total,
     }
+}
+
+export async function fetchUsersActionWithoutInstructor({
+  role,
+  page,
+  limit,
+  actualUserId
+}: FetchUsersActionProps): Promise<{ users: any; total: number }> {
+  const currentPage = Math.max(0, page)
+  const skip = currentPage * limit
+
+  const whereClause: any = {
+    role: role,
+    id: { not: actualUserId }, 
+    StudentAdditionalData: {
+      assignedInstructorId: null, 
+    }
+  };
+
+  const [users, total] = await Promise.all([
+    db.user.findMany({
+      where: whereClause,
+      skip,
+      take: limit,
+      include: {
+        StudentAdditionalData: true,
+        InstructorAdditionalData: true,
+      },
+    }),
+    db.user.count({ where: whereClause }),
+  ])
+  return {
+    users,
+    total,
+  }
 }
 
 export async function deleteUserAction(userId: string) {
