@@ -25,7 +25,7 @@ const UserProfile = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showAdditionalFields, setShowAdditionalFields] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [showButtons, setShowButtons] = useState<boolean>(false)
+  const [isFromCredentials, setIsFromCredentials] = useState<boolean>(false)
 
   const { data: session } = useSession();
   const currentUser = useCurrentUser();
@@ -57,7 +57,7 @@ const UserProfile = () => {
         reset(profile);
         setUserImage(profile.image || null);
         setRole(profile.role);
-        setShowButtons(profile.credentials)
+        setIsFromCredentials(profile.credentials)
         console.log('cred: ', profile.credentials)
       }
     } catch (error) {
@@ -137,7 +137,7 @@ const UserProfile = () => {
               )}
             </Avatar>
             {
-              showButtons ? (<div className="flex space-x-2">
+              isFromCredentials ? (<div className="flex space-x-2">
               <input
                 type="file"
                 accept="image/*"
@@ -169,14 +169,14 @@ const UserProfile = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-bold mb-2">Nome</label>
-                <Input type="text" {...register("name")} />
+                <Input type="text" disabled={!isFromCredentials} {...register("name")} />
                 {errors.name && (
                   <span className="text-red-600 text-sm">{errors.name.message?.toString()}</span>
                 )}
               </div>
               <div>
                 <label className="block text-sm font-bold mb-2">Email</label>
-                <Input type="email" {...register("email")} />
+                <Input type="email" disabled={!isFromCredentials} {...register("email")} />
                 {errors.email && (
                   <span className="text-red-600 text-sm">{errors.email.message?.toString()}</span>
                 )}
