@@ -23,7 +23,7 @@ export const STUDENT_LINKS = [
 
 export const ADMIN_LINKS = [
   {
-    title: "Admin",
+    title: "Perfil",
     path: "/profile",
   },
   {
@@ -37,6 +37,10 @@ export const ADMIN_LINKS = [
   {
     title: "Instrutores",
     path: "/instructors"
+  },
+  {
+    title: "Dashboard",
+    path: "/dashboard"
   }
 ]
 
