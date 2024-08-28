@@ -4,7 +4,7 @@ import React from 'react'
 import Link from "next/link"
 import { links, RoleLinks, Link as LinkType, ROLES } from "@/app/(protected)/_constants" 
 import { useCurrentRole } from "@/hooks/use-current-role"
-import { FaUser, FaCog, FaIndustry, FaChalkboardTeacher, FaUsers } from 'react-icons/fa'
+import { FaUser, FaCog, FaIndustry, FaChalkboardTeacher, FaUsers, FaHome } from 'react-icons/fa'
 import { CgGym } from "react-icons/cg"
 import { SlGraph } from "react-icons/sl"
 import { BsCashCoin } from "react-icons/bs"
@@ -29,6 +29,7 @@ const Sidebar = () => {
     "Pagamento": <BsCashCoin />,
     "Associar aluno": <FaLink />,
     "Usuários": <FaUsers />,
+    "Home": <FaHome />
   }
 
   return (

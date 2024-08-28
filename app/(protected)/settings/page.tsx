@@ -35,6 +35,7 @@ import {
 import { Switch } from "@/components/ui/switch"
 import FormError from "@/components/form-error"
 import FormSuccess from "@/components/form-success"
+import { Role } from "@/enums/role"
 
 export default function SettingsPage() {
   const user = useCurrentUser()
@@ -197,7 +198,8 @@ export default function SettingsPage() {
                 </>
               )}
 
-              <FormField
+                {user.role === Role.ADMIN && (
+                <FormField
                 control={form.control}
                 name="role"
                 render={({ field }) => (
@@ -222,7 +224,8 @@ export default function SettingsPage() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+                />
+                )}
 
               {user?.isOAuth === false && (
                 <FormField
