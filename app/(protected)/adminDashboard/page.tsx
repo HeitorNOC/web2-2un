@@ -35,7 +35,6 @@ const AdminDashboard = () => {
         const unassigned = await getStudentsWithoutInstructor();
         const paymentStatus = await getPaymentStatus();
 
-        // Configurando dados para o gráfico de alunos
         setStudentData([
           {
             name: "Alunos",
@@ -44,7 +43,6 @@ const AdminDashboard = () => {
           },
         ]);
 
-        // Configurando dados para o gráfico de pagamento
         setPaymentStatusData([
           { name: "Ativo", value: paymentStatus.active },
           { name: "Sem Pagamento", value: paymentStatus.noPayment },
@@ -58,13 +56,13 @@ const AdminDashboard = () => {
     fetchData();
   }, []);
 
-  const studentColors = ["#0088FE", "#FFBB28"]; // Azul e Amarelo
-  const paymentColors = ["#00C49F", "#FF0000", "#FF8042"]; // Verde, Vermelho e Laranja
+  const studentColors = ["#0088FE", "#FFBB28"]; 
+  const paymentColors = ["#00C49F", "#FF0000", "#FF8042"]; 
 
   return (
-    <div className="min-h-screen">
-      <h1 className="text-white mb-4">Admin Dashboard</h1>
-      <div className="flex justify-center gap-4">
+    <div className="ml-12 min-h-screen">
+      <h1 className="ml-12 text-white mb-4">Admin Dashboard</h1>
+      <div className=" ml-12 flex justify-center gap-4">
         <div className="w-1/2 bg-gray-800 p-4 shadow rounded">
           <h2 className="text-white mb-2">Alunos por Professor</h2>
           <ChartContainer

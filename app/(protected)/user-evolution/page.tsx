@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableHeader, TableBody, TableRow, TableCell } from "@/components/ui/table";
 import { fetchWorkoutLogs } from "../../../actions/workoutAction";
 import { Eye } from "phosphor-react";
+import useAuthCheck from "@/hooks/use-auth-check";
 
 
 interface WorkoutLogEntry {
@@ -31,6 +32,7 @@ const WorkoutLogEvolution = () => {
     const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
     const [groupedExercises, setGroupedExercises] = useState<{ [key: string]: WorkoutLogEntry[] }>({});
     const actualUser = useCurrentUser();
+    useAuthCheck();
 
     useEffect(() => {
         const loadWorkoutLogs = async () => {
