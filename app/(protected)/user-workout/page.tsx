@@ -9,6 +9,7 @@ import { useCurrentUser } from "../../../hooks/use-current-user";
 import Spinner from "../../../components/spinner";
 import { Role } from "../../../enums/role";
 import { useRouter } from "next/navigation";
+import useAuthCheck from "@/hooks/use-auth-check";
 
 const UserWorkout: FC = () => {
     const [selectedBlockIndex, setSelectedBlockIndex] = useState(0);
@@ -19,6 +20,7 @@ const UserWorkout: FC = () => {
     const [loading, setLoading] = useState(true);
     const actualUser = useCurrentUser();
     const router = useRouter();
+    useAuthCheck();
 
     useEffect(() => {
         if (actualUser.role !== Role.STUDENT) {

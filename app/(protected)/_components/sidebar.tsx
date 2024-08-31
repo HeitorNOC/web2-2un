@@ -12,6 +12,7 @@ import { FaLink } from "react-icons/fa"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import "./style.css"
 import UserButton from '@/components/auth/user-button'
+import { MdDashboard } from "react-icons/md";
 
 const Sidebar = () => {
   const userRole = useCurrentRole()
@@ -20,7 +21,7 @@ const Sidebar = () => {
 
   const icons: { [key: string]: any } = {
     "Perfil": <FaUser />,
-    "Settings": <FaCog />,
+    "Configurações": <FaCog />,
     "Admin": <FaUser />,
     "Máquinas": <FaIndustry/>,
     "Instrutores": <FaChalkboardTeacher/>,
@@ -29,7 +30,8 @@ const Sidebar = () => {
     "Pagamento": <BsCashCoin />,
     "Associar aluno": <FaLink />,
     "Usuários": <FaUsers />,
-    "Home": <FaHome />
+    "Home": <FaHome />,
+    "Dashboard": <MdDashboard />
   }
 
   return (

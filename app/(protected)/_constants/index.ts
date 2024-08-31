@@ -20,7 +20,7 @@ export const STUDENT_LINKS = [
     path: "user-evolution"
   },
   {
-    title: "Settings",
+    title: "Configurações",
     path: "/settings",
   }
 ]
@@ -35,7 +35,7 @@ export const ADMIN_LINKS = [
     path: "/profile",
   },
   {
-    title: "Settings",
+    title: "Configurações",
     path: "/settings",
   },
   {
@@ -49,6 +49,10 @@ export const ADMIN_LINKS = [
   {
     title: "Usuários",
     path: "/users"
+  },
+  {
+    title: "Dashboard",
+    path: "/dashboard"
   }
 ]
 
@@ -74,7 +78,7 @@ export const INSTRUCTOR_LINKS = [
     path: "/machines"
   },
   {
-    title: "Settings",
+    title: "Configurações",
     path: "/settings",
   },
 ]
